@@ -6,8 +6,8 @@ import jakarta.persistence.*;
 import java.util.UUID;
 
 @Entity
-@Table(name = "interests", schema = "portfolio")
-public class Interest extends Auditable {
+@Table(name = "skills", schema = "portfolio")
+public class Skill extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -17,13 +17,11 @@ public class Interest extends Auditable {
     @JoinColumn(name = "profile_id")
     private Profile profile;
 
-    public Interest(String name) {
+    public Skill(String name) {
         this.name = name;
     }
 
-    public Interest() {
-
-    }
+    public Skill() {}
 
     public UUID getId() {
         return id;
@@ -31,14 +29,6 @@ public class Interest extends Auditable {
 
     public void setId(UUID id) {
         this.id = id;
-    }
-
-    public Profile getProfile() {
-        return profile;
-    }
-
-    public void setProfile(Profile profile) {
-        this.profile = profile;
     }
 
     public String getName() {
@@ -49,9 +39,17 @@ public class Interest extends Auditable {
         this.name = name;
     }
 
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
+    }
+
     @Override
     public String toString() {
-        return "Interest{" +
+        return "Skill{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 super.toString();

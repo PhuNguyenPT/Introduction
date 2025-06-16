@@ -1,7 +1,7 @@
 <div th:fragment="skills-section">
     <div class="skills-grid animate-fade-in">
         <span th:each="skill : ${skills}"
-              th:text="${skill}"
+              th:text="${skill.name}"
               class="skill-item animate-fade-in">
             Skill
         </span>

@@ -3,8 +3,9 @@ package com.galaxyfreedom.introduction.config;
 import com.galaxyfreedom.introduction.profile.entity.Experience;
 import com.galaxyfreedom.introduction.profile.entity.Interest;
 import com.galaxyfreedom.introduction.profile.entity.Profile;
+import com.galaxyfreedom.introduction.profile.entity.Skill;
 import com.galaxyfreedom.introduction.profile.service.ProfileService;
-import com.galaxyfreedom.introduction.security.entity.Role;
+import com.galaxyfreedom.introduction.security.enums.Role;
 import com.galaxyfreedom.introduction.security.entity.UserEntity;
 import com.galaxyfreedom.introduction.security.service.UserEntityService;
 import org.slf4j.Logger;
@@ -67,10 +68,17 @@ public class DataInitializer implements CommandLineRunner {
         profile.setPrimary(true);
 
         // Skills
-        Set<String> skills = new HashSet<>(Arrays.asList(
+        Profile finalProfile1 = profile;
+        Set<Skill> skills = Stream.of(
                 "JavaScript", "Java", "Spring Framework", "HTMX", "Thymeleaf",
                 "MongoDB", "PostgreSQL", "Docker", "Git", "Cloud Hosting"
-        ));
+        )
+                .map(s -> {
+                    Skill skill = new Skill(s);
+                    skill.setProfile(finalProfile1);
+                    return skill;
+                })
+                .collect(Collectors.toSet());
         profile.setSkills(skills);
 
         // --- FIX FOR INTERESTS ---

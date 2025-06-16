@@ -1,6 +1,6 @@
 package com.galaxyfreedom.introduction.security.service;
 
-import com.galaxyfreedom.introduction.security.entity.Role;
+import com.galaxyfreedom.introduction.security.enums.Role;
 import com.galaxyfreedom.introduction.security.entity.UserEntity;
 import com.galaxyfreedom.introduction.security.repository.UserEntityRepository;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -11,7 +11,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 

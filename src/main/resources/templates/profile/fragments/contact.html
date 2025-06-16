@@ -16,35 +16,35 @@
                 </div>
                 <div>
                     <p style="font-size: 0.9rem; color: #718096; margin-bottom: 0.25rem;">Email Address</p>
-                    <a th:href="'mailto:' + ${profile.email}"
+                    <a th:href="'mailto:' + ${contact.email}"
                        style="color: #2d3748; font-weight: 600; text-decoration: none; transition: color 0.3s ease;"
                        onmouseover="this.style.color='#667eea'"
                        onmouseout="this.style.color='#2d3748'"
-                       th:text="${profile.email}">thienphu.dev@gmail.com</a>
+                       th:text="${contact.email}">Email</a>
                 </div>
             </div>
 
-            <div class="contact-item" th:if="${profile.phone}">
+            <div class="contact-item" th:if="${contact.phone}">
                 <div class="contact-icon phone">
                     <i class="fas fa-phone"></i>
                 </div>
                 <div>
                     <p style="font-size: 0.9rem; color: #718096; margin-bottom: 0.25rem;">Phone Number</p>
-                    <a th:href="'tel:' + ${profile.phone}"
+                    <a th:href="'tel:' + ${contact.phone}"
                        style="color: #2d3748; font-weight: 600; text-decoration: none; transition: color 0.3s ease;"
                        onmouseover="this.style.color='#48bb78'"
                        onmouseout="this.style.color='#2d3748'"
-                       th:text="${profile.phone}">+84 123 456 789</a>
+                       th:text="${contact.phone}">Phone number</a>
                 </div>
             </div>
 
-            <div class="contact-item" th:if="${profile.location}">
+            <div class="contact-item" th:if="${contact.location}">
                 <div class="contact-icon location">
                     <i class="fas fa-map-marker-alt"></i>
                 </div>
                 <div>
                     <p style="font-size: 0.9rem; color: #718096; margin-bottom: 0.25rem;">Location</p>
-                    <p style="color: #2d3748; font-weight: 600;" th:text="${profile.location}">Ho Chi Minh City, Vietnam</p>
+                    <p style="color: #2d3748; font-weight: 600;" th:text="${contact.location}">Ho Chi Minh City, Vietnam</p>
                 </div>
             </div>
 
@@ -52,13 +52,13 @@
             <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid rgba(102, 126, 234, 0.2);">
                 <p style="font-size: 1rem; color: #4a5568; margin-bottom: 1rem; text-align: center; font-weight: 600;">Connect With Me</p>
                 <div class="social-links">
-                    <a th:href="${profile.linkedinUrl}" class="social-link linkedin" target="_blank" title="LinkedIn">
+                    <a th:href="${contact.linkedinUrl}" class="social-link linkedin" target="_blank" title="LinkedIn">
                         <i class="fab fa-linkedin"></i>
                     </a>
-                    <a th:href="${profile.githubUrl}" class="social-link github" target="_blank" title="GitHub">
+                    <a th:href="${contact.githubUrl}" class="social-link github" target="_blank" title="GitHub">
                         <i class="fab fa-github"></i>
                     </a>
-                    <a th:href="${profile.portfolioUrl}" class="social-link portfolio" target="_blank" title="Portfolio">
+                    <a th:href="${contact.portfolioUrl}" class="social-link portfolio" target="_blank" title="Portfolio">
                         <i class="fas fa-globe"></i>
                     </a>
                 </div>
@@ -151,7 +151,7 @@
                 Schedule Meeting
             </button>
 
-            <a th:href="'mailto:' + ${profile.email} + '?subject=Quick Question'"
+            <a th:href="'mailto:' + ${contact.email} + '?subject=Quick Question'"
                class="quick-action-btn email">
                 <i class="fas fa-envelope-open"></i>
                 Quick Email

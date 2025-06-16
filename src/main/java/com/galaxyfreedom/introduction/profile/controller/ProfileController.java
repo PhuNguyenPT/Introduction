@@ -1,17 +1,21 @@
 package com.galaxyfreedom.introduction.profile.controller;
 
+import com.galaxyfreedom.introduction.profile.assemblers.ContactModelAssembler;
 import com.galaxyfreedom.introduction.profile.assemblers.ExperienceDetailsModelAssembler;
 import com.galaxyfreedom.introduction.profile.assemblers.ExperienceModelAssembler;
 import com.galaxyfreedom.introduction.profile.assemblers.ProfileModelAssembler;
 import com.galaxyfreedom.introduction.profile.entity.Experience;
 import com.galaxyfreedom.introduction.profile.entity.Interest;
 import com.galaxyfreedom.introduction.profile.entity.Profile;
+import com.galaxyfreedom.introduction.profile.entity.Skill;
+import com.galaxyfreedom.introduction.profile.model.ContactModel;
 import com.galaxyfreedom.introduction.profile.model.ExperienceDetailsModel;
 import com.galaxyfreedom.introduction.profile.model.ExperienceModel;
 import com.galaxyfreedom.introduction.profile.model.ProfileModel;
 import com.galaxyfreedom.introduction.profile.service.ExperienceService;
 import com.galaxyfreedom.introduction.profile.service.InterestService;
 import com.galaxyfreedom.introduction.profile.service.ProfileService;
+import com.galaxyfreedom.introduction.profile.service.SkillService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -34,14 +38,22 @@ public class ProfileController {
     private final @Qualifier("experienceModelAssembler") ExperienceModelAssembler experienceModelAssembler;
     private final @Qualifier("experienceDetailsModelAssembler") ExperienceDetailsModelAssembler experienceDetailsModelAssembler;
     private final InterestService interestService;
+    private final SkillService skillService;
+    private final @Qualifier("contactModelAssembler") ContactModelAssembler contactModelAssembler;
 
-    public ProfileController(ProfileModelAssembler profileModelAssembler, ProfileService profileService, ExperienceService experienceService, ExperienceModelAssembler experienceModelAssembler, ExperienceDetailsModelAssembler experienceDetailsModelAssembler, InterestService interestService) {
+    public ProfileController(ProfileModelAssembler profileModelAssembler, ProfileService profileService,
+                             ExperienceService experienceService, ExperienceModelAssembler experienceModelAssembler,
+                             ExperienceDetailsModelAssembler experienceDetailsModelAssembler,
+                             InterestService interestService, SkillService skillService,
+                             ContactModelAssembler contactModelAssembler) {
         this.profileModelAssembler = profileModelAssembler;
         this.profileService = profileService;
         this.experienceService = experienceService;
         this.experienceModelAssembler = experienceModelAssembler;
         this.experienceDetailsModelAssembler = experienceDetailsModelAssembler;
         this.interestService = interestService;
+        this.skillService = skillService;
+        this.contactModelAssembler = contactModelAssembler;
     }
 
     @GetMapping
@@ -79,9 +91,9 @@ public class ProfileController {
     }
 
     @GetMapping("/{profileId}/skills")
-    public String getSkills(Model model, @PathVariable String profileId) {
-        Profile profile = profileService.getPrimaryProfile();
-        model.addAttribute("skills", profile.getSkills());
+    public String getSkills(Model model, @PathVariable UUID profileId) {
+        Set<Skill> skills = skillService.findAlLByProfile_Id(profileId);
+        model.addAttribute("skills", skills);
         return "profile/fragments/skills";
     }
 
@@ -96,8 +108,8 @@ public class ProfileController {
     @GetMapping("/{profileId}/contact")
     public String getContactInfo(Model model, @PathVariable String profileId) {
         Profile profile = profileService.getPrimaryProfile();
-        ProfileModel profileModel = profileModelAssembler.toModel(profile);
-        model.addAttribute("profile", profileModel);
+        ContactModel contactModel = contactModelAssembler.toModel(profile);
+        model.addAttribute("contact", contactModel);
         return "profile/fragments/contact";
     }
 

@@ -29,15 +29,17 @@ public class Profile extends Auditable {
     @JoinColumn(name = "user_id", unique = true)
     private UserEntity user;
 
-    @ElementCollection
-    @CollectionTable(name = "profile_skills", schema = "portfolio")
-    private Set<String> skills;
+    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Skill> skills;
 
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Experience> experiences;
 
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Interest> interests;
+
+    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Project> projects;
 
     // Constructors, getters, and setters
     public Profile() {}
@@ -95,12 +97,37 @@ public class Profile extends Auditable {
         this.user = user;
     }
 
-    public Set<String> getSkills() { return skills; }
-    public void setSkills(Set<String> skills) { this.skills = skills; }
+    public Set<Skill> getSkills() { return skills; }
+    public void setSkills(Set<Skill> skills) { this.skills = skills; }
 
     public Set<Experience> getExperiences() { return experiences; }
     public void setExperiences(Set<Experience> experiences) { this.experiences = experiences; }
 
     public Set<Interest> getInterests() { return interests; }
     public void setInterests(Set<Interest> interests) { this.interests = interests; }
+
+    public Set<Project> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(Set<Project> projects) {
+        this.projects = projects;
+    }
+
+    @Override
+    public String toString() {
+        return "Profile{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", location='" + location + '\'' +
+                ", linkedinUrl='" + linkedinUrl + '\'' +
+                ", githubUrl='" + githubUrl + '\'' +
+                ", portfolioUrl='" + portfolioUrl + '\'' +
+                ", isPrimary=" + isPrimary +
+                super.toString();
+    }
 }

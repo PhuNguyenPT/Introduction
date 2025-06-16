@@ -1,9 +1,11 @@
 package com.galaxyfreedom.introduction.profile.config;
 
+import com.galaxyfreedom.introduction.profile.assemblers.ContactModelAssembler;
 import com.galaxyfreedom.introduction.profile.assemblers.ExperienceDetailsModelAssembler;
 import com.galaxyfreedom.introduction.profile.assemblers.ExperienceModelAssembler;
 import com.galaxyfreedom.introduction.profile.assemblers.ProfileModelAssembler;
 import com.galaxyfreedom.introduction.profile.controller.ProfileController;
+import com.galaxyfreedom.introduction.profile.model.ContactModel;
 import com.galaxyfreedom.introduction.profile.model.ExperienceDetailsModel;
 import com.galaxyfreedom.introduction.profile.model.ExperienceModel;
 import com.galaxyfreedom.introduction.profile.model.ProfileModel;
@@ -25,5 +27,10 @@ public class ProfileBeanConfig {
     @Bean(name = "experienceDetailsModelAssembler")
     public ExperienceDetailsModelAssembler experienceDetailsModelAssembler() {
         return new ExperienceDetailsModelAssembler(ProfileController.class, ExperienceDetailsModel.class);
+    }
+
+    @Bean(name = "contactModelAssembler")
+    public ContactModelAssembler contactModelAssembler() {
+        return new ContactModelAssembler(ProfileController.class, ContactModel.class);
     }
 }
