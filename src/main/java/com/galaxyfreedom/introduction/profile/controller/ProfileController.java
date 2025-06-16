@@ -1,21 +1,9 @@
 package com.galaxyfreedom.introduction.profile.controller;
 
-import com.galaxyfreedom.introduction.profile.assemblers.ContactModelAssembler;
-import com.galaxyfreedom.introduction.profile.assemblers.ExperienceDetailsModelAssembler;
-import com.galaxyfreedom.introduction.profile.assemblers.ExperienceModelAssembler;
-import com.galaxyfreedom.introduction.profile.assemblers.ProfileModelAssembler;
-import com.galaxyfreedom.introduction.profile.entity.Experience;
-import com.galaxyfreedom.introduction.profile.entity.Interest;
-import com.galaxyfreedom.introduction.profile.entity.Profile;
-import com.galaxyfreedom.introduction.profile.entity.Skill;
-import com.galaxyfreedom.introduction.profile.model.ContactModel;
-import com.galaxyfreedom.introduction.profile.model.ExperienceDetailsModel;
-import com.galaxyfreedom.introduction.profile.model.ExperienceModel;
-import com.galaxyfreedom.introduction.profile.model.ProfileModel;
-import com.galaxyfreedom.introduction.profile.service.ExperienceService;
-import com.galaxyfreedom.introduction.profile.service.InterestService;
-import com.galaxyfreedom.introduction.profile.service.ProfileService;
-import com.galaxyfreedom.introduction.profile.service.SkillService;
+import com.galaxyfreedom.introduction.profile.assemblers.*;
+import com.galaxyfreedom.introduction.profile.entity.*;
+import com.galaxyfreedom.introduction.profile.model.*;
+import com.galaxyfreedom.introduction.profile.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -40,12 +28,14 @@ public class ProfileController {
     private final InterestService interestService;
     private final SkillService skillService;
     private final @Qualifier("contactModelAssembler") ContactModelAssembler contactModelAssembler;
+    private final ProjectService projectService;
+    private final ProjectModelAssembler projectModelAssembler;
 
     public ProfileController(ProfileModelAssembler profileModelAssembler, ProfileService profileService,
                              ExperienceService experienceService, ExperienceModelAssembler experienceModelAssembler,
                              ExperienceDetailsModelAssembler experienceDetailsModelAssembler,
                              InterestService interestService, SkillService skillService,
-                             ContactModelAssembler contactModelAssembler) {
+                             ContactModelAssembler contactModelAssembler, ProjectService projectService, ProjectModelAssembler projectModelAssembler) {
         this.profileModelAssembler = profileModelAssembler;
         this.profileService = profileService;
         this.experienceService = experienceService;
@@ -54,6 +44,8 @@ public class ProfileController {
         this.interestService = interestService;
         this.skillService = skillService;
         this.contactModelAssembler = contactModelAssembler;
+        this.projectService = projectService;
+        this.projectModelAssembler = projectModelAssembler;
     }
 
     @GetMapping
@@ -65,6 +57,18 @@ public class ProfileController {
         model.addAttribute("profile", profileModel);
         return "profile/index";
     }
+
+    @GetMapping("/{profileId}/projects")
+    public String getProjects(@PathVariable UUID profileId, Model model) {
+        Set<Project> projects = projectService.findAllByProfile_Id(profileId);
+        Set<ProjectModel> projectModels = projects
+                .stream()
+                .map(projectModelAssembler::toModel)
+                .collect(Collectors.toSet());
+        model.addAttribute("projects", projectModels);
+        return "profile/fragments/projects";
+    }
+
 
     @GetMapping("/{profileId}/experiences")
     public String getExperiences(@PathVariable("profileId") UUID profileId, Model model) {

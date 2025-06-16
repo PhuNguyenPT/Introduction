@@ -1,6 +1,7 @@
 package com.galaxyfreedom.introduction.profile.entity;
 
 import com.galaxyfreedom.introduction.audit.Auditable;
+import com.galaxyfreedom.introduction.profile.enums.ProjectType;
 import com.galaxyfreedom.introduction.profile.enums.Status;
 import jakarta.persistence.*;
 
@@ -36,6 +37,7 @@ public class Project extends Auditable {
 
     private LocalDate startDate;
     private LocalDate endDate;
+    private boolean current;
 
     @ElementCollection
     @CollectionTable(name = "project_technologies", schema = "portfolio",
@@ -64,31 +66,7 @@ public class Project extends Auditable {
         this.title = title;
         this.description = description;
         this.projectType = projectType;
-        this.status = Status.COMPLETED;
     }
-
-    // Enums
-    public enum ProjectType {
-        WEB_APPLICATION("Web Application"),
-        MOBILE_APPLICATION("Mobile Application"),
-        DATA_SCIENCE("Data Science/ML"),
-        UI_UX_DESIGN("UI/UX Design"),
-        API_BACKEND("API/Backend"),
-        DESKTOP_APPLICATION("Desktop Application"),
-        GAME("Game Development"),
-        OTHER("Other");
-
-        private final String displayName;
-
-        ProjectType(String displayName) {
-            this.displayName = displayName;
-        }
-
-        public String getDisplayName() {
-            return displayName;
-        }
-    }
-
 
     // Getters and Setters
     public UUID getId() {
@@ -179,6 +157,22 @@ public class Project extends Auditable {
         this.endDate = endDate;
     }
 
+    public boolean isCurrent() {
+        return current;
+    }
+
+    public void setCurrent(boolean current) {
+        this.current = current;
+    }
+
+    public Boolean getFeatured() {
+        return isFeatured;
+    }
+
+    public void setFeatured(Boolean featured) {
+        isFeatured = featured;
+    }
+
     public Set<String> getTechnologies() {
         return technologies;
     }
@@ -236,8 +230,11 @@ public class Project extends Auditable {
         return Status.IN_PROGRESS.equals(this.status);
     }
 
-    public boolean isFeaturedProject() {
-        return Boolean.TRUE.equals(this.isFeatured);
+    public String getFormattedDuration() {
+        if (current) {
+            return startDate.getYear() + " - Present";
+        }
+        return startDate.getYear() + " - " + endDate.getYear();
     }
 
     @Override

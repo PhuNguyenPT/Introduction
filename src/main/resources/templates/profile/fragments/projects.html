@@ -1,4 +1,4 @@
-<!-- Enhanced Projects Fragment -->
+<!-- Enhanced Projects Fragment with Fixed Equal Icons -->
 <div class="animate-fade-in">
     <h2 class="contact-title">Featured Projects</h2>
 
@@ -10,61 +10,36 @@
                 My Work Showcase
             </h3>
 
-            <!-- Loop through projects here, example with static data -->
-            <div class="contact-item">
-                <div class="contact-icon email"> <!-- Reusing 'email' styling for a blue icon -->
-                    <i class="fas fa-globe"></i>
-                </div>
-                <div>
-                    <p style="font-size: 0.9rem; color: #718096; margin-bottom: 0.25rem;">Web Application</p>
-                    <a href="https://example.com/project1" target="_blank"
-                       style="color: #2d3748; font-weight: 600; text-decoration: none; transition: color 0.3s ease;"
-                       onmouseover="this.style.color='#667eea'"
-                       onmouseout="this.style.color='#2d3748'">E-commerce Platform</a>
-                    <p style="font-size: 0.8rem; color: #718096;">A full-stack e-commerce solution with secure payments.</p>
-                </div>
-            </div>
-
-            <div class="contact-item">
-                <div class="contact-icon phone"> <!-- Reusing 'phone' styling for a green icon -->
-                    <i class="fas fa-mobile-alt"></i>
-                </div>
-                <div>
-                    <p style="font-size: 0.9rem; color: #718096; margin-bottom: 0.25rem;">Mobile Development</p>
-                    <a href="https://example.com/project2" target="_blank"
-                       style="color: #2d3748; font-weight: 600; text-decoration: none; transition: color 0.3s ease;"
-                       onmouseover="this.style.color='#48bb78'"
-                       onmouseout="this.style.color='#2d3748'">Fitness Tracking App</a>
-                    <p style="font-size: 0.8rem; color: #718096;">Cross-platform mobile application for workout logging.</p>
+            <!-- Dynamic Projects Loop using Thymeleaf -->
+            <div th:if="${projects != null and !projects.isEmpty()}">
+                <div th:each="project : ${projects}" class="project-item">
+                    <div class="project-icon"
+                         th:class="${'project-icon ' + (project.status != null ? (project.status.name() == 'COMPLETED' ? 'completed' : (project.status.name() == 'IN_PROGRESS' ? 'in-progress' : 'pending')) : 'pending')}">
+                        <i th:class="${project.status != null ? (project.status.name() == 'COMPLETED' ? 'fas fa-check-circle' : (project.status.name() == 'IN_PROGRESS' ? 'fas fa-cog' : 'fas fa-clock')) : 'fas fa-code'}">
+                        </i>
+                    </div>
+                    <div>
+                        <p style="font-size: 0.9rem; color: #718096; margin-bottom: 0.25rem;"
+                           th:text="${project.status != null ? project.status.name() : 'Unknown Status'}">Project Status</p>
+                        <p style="color: #2d3748; font-weight: 600; margin-bottom: 0.5rem;"
+                           th:text="${project.title}">Project Title</p>
+                        <p style="font-size: 0.8rem; color: #718096; margin-bottom: 0.25rem;"
+                           th:text="${project.description}">Project description goes here.</p>
+                        <p style="font-size: 0.75rem; color: #a0aec0;"
+                           th:if="${project.duration != null and !project.duration.isEmpty()}"
+                           th:text="'Duration: ' + ${project.duration}">Duration: 3 months</p>
+                    </div>
                 </div>
             </div>
 
-            <div class="contact-item">
-                <div class="contact-icon location"> <!-- Reusing 'location' styling for a pink icon -->
-                    <i class="fas fa-chart-line"></i>
+            <!-- Fallback message when no projects are available -->
+            <div th:if="${projects == null or projects.isEmpty()}" class="project-item">
+                <div class="project-icon info">
+                    <i class="fas fa-info-circle"></i>
                 </div>
                 <div>
-                    <p style="font-size: 0.9rem; color: #718096; margin-bottom: 0.25rem;">Data Visualization</p>
-                    <a href="https://example.com/project3" target="_blank"
-                       style="color: #2d3748; font-weight: 600; text-decoration: none; transition: color 0.3s ease;"
-                       onmouseover="this.style.color='#ed64a6'"
-                       onmouseout="this.style.color='#2d3748'">Interactive Dashboard</a>
-                    <p style="font-size: 0.8rem; color: #718096;">Visualize complex datasets with D3.js and React.</p>
-                </div>
-            </div>
-
-            <!-- More projects can be added dynamically here using Thymeleaf's th:each -->
-
-            <!-- Social Links / Project Links -->
-            <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid rgba(102, 126, 234, 0.2);">
-                <p style="font-size: 1rem; color: #4a5568; margin-bottom: 1rem; text-align: center; font-weight: 600;">Explore My Repositories</p>
-                <div class="social-links">
-                    <a th:href="${profile.githubUrl}" class="social-link github" target="_blank" title="GitHub">
-                        <i class="fab fa-github"></i>
-                    </a>
-                    <a th:href="${profile.portfolioUrl}" class="social-link portfolio" target="_blank" title="More Projects">
-                        <i class="fas fa-code-branch"></i>
-                    </a>
+                    <p style="color: #2d3748; font-weight: 600;">No projects available</p>
+                    <p style="font-size: 0.8rem; color: #718096;">Projects will be displayed here once they are added to the portfolio.</p>
                 </div>
             </div>
         </div>
@@ -142,34 +117,85 @@
             <div id="project-response" style="margin-top: 1.5rem;"></div>
         </div>
     </div>
-
-    <!-- Quick Action Buttons for Projects -->
-    <div class="quick-actions">
-        <h3 class="quick-actions-title">Quick Project Actions</h3>
-        <div class="quick-actions-grid">
-            <button class="quick-action-btn schedule"
-                    hx-get="/profiles/schedule-project-call"
-                    hx-target="#meeting-modal"
-                    hx-swap="innerHTML">
-                <i class="fas fa-calendar-check"></i>
-                Schedule Project Call
-            </button>
-
-            <a th:href="'mailto:' + ${profile.email} + '?subject=Project Inquiry'"
-               class="quick-action-btn email">
-                <i class="fas fa-envelope-open-text"></i>
-                Send Project Email
-            </a>
-
-            <button class="quick-action-btn download"
-                    hx-get="/profiles/download-project-portfolio"
-                    hx-target="_blank">
-                <i class="fas fa-file-download"></i>
-                Download Project List
-            </button>
-        </div>
-    </div>
-
-    <!-- Meeting Modal Container (for scheduling project calls) -->
-    <div id="meeting-modal"></div>
 </div>
+
+<style>
+    /* Fixed CSS for equal project icons */
+    .project-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 1rem;
+        font-size: 1.2rem;
+        color: white;
+        transition: all 0.3s ease;
+        /* Ensure all icons have the same base properties */
+        flex-shrink: 0; /* Prevent icon from shrinking */
+    }
+
+    .project-icon.completed {
+        background: linear-gradient(45deg, #48bb78, #38a169);
+    }
+
+    .project-icon.in-progress {
+        background: linear-gradient(45deg, #4299e1, #3182ce);
+    }
+
+    .project-icon.pending {
+        background: linear-gradient(45deg, #ed8936, #dd6b20);
+    }
+
+    .project-icon.info {
+        background: linear-gradient(45deg, #667eea, #764ba2);
+    }
+
+    /* Ensure all icons inside have the same size and positioning */
+    .project-icon i {
+        font-size: 1.2rem;
+        line-height: 1;
+    }
+
+    /* Add spinning animation for in-progress items */
+    .project-icon.in-progress i {
+        animation: spin 5s linear infinite;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    /* Ensure consistent hover effects */
+    .project-icon:hover {
+        transform: rotate(5deg) scale(1.1);
+    }
+
+    /* Make sure the project items are properly aligned */
+    .project-item {
+        display: flex;
+        align-items: flex-start; /* Changed from center to flex-start for better text alignment */
+        padding: 1rem;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.5);
+        transition: all 0.3s ease;
+        margin-bottom: 1rem;
+    }
+
+    .project-item:hover {
+        background: rgba(255, 255, 255, 0.8);
+        transform: translateX(5px);
+    }
+
+    /* Ensure text content takes up remaining space properly */
+    .project-item > div:last-child {
+        flex: 1;
+        min-width: 0; /* Allow text to wrap properly */
+    }
+</style>

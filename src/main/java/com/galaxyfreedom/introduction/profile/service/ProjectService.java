@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
 import java.util.UUID;
 
 
@@ -25,5 +26,9 @@ public class ProjectService {
     public Project findById(UUID id) {
         return projectRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Project with id " + id + " not found"));
+    }
+
+    public Set<Project> findAllByProfile_Id(UUID profileId) {
+        return projectRepository.findAllByProfile_Id(profileId);
     }
 }
