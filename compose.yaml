@@ -1,0 +1,27 @@
+networks:
+  local-app-network:
+    driver: bridge
+services:
+  local-postgres:
+    image: 'postgres:latest'
+    container_name: local-postgres
+    restart: always
+    environment:
+      POSTGRES_DB: mydatabase
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5432:5432"
+    volumes:
+      - local_postgres_data:/var/lib/postgresql/data
+    networks:
+      - local-app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U myuser -d mydatabase"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+volumes:
+  local_postgres_data:
+    driver: local

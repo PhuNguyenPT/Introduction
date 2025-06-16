@@ -1,0 +1,249 @@
+<!-- profile/fragments/experience-modal.html -->
+<!-- Modal Backdrop -->
+<div class="modal-backdrop" th:if="${experience != null}">
+    <!-- Modal Content -->
+    <div class="modal-dialog">
+        <div class="modal-header">
+            <h2 class="modal-title" th:text="${experience.title}">Title</h2>
+            <button type="button" class="modal-close" data-close-modal aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <div class="modal-body">
+            <h3 class="company-name" th:text="${experience.company}">Company</h3>
+            <p class="duration">
+                [[${#temporals.format(experience.startDate, 'MMM yyyy')}]] -
+                [[${experience.endDate != null ? #temporals.format(experience.endDate, 'MMM yyyy') : 'Present'}]]
+            </p>
+            <div class="description" th:text="${experience.description}">Description</div>
+        </div>
+    </div>
+</div>
+
+<!-- Error State -->
+<div class="modal-backdrop" th:if="${experience == null}">
+    <div class="modal-dialog modal-dialog-sm">
+        <div class="modal-header">
+            <h2 class="modal-title error-title">Error</h2>
+            <button type="button" class="modal-close" data-close-modal aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p class="error-message">Experience not found.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Initialize modal when content loads
+    (function() {
+        function initModal() {
+            const modal = document.querySelector('#experience-modal');
+            if (!modal) return;
+
+            // Show modal with animation
+            const backdrop = modal.querySelector('.modal-backdrop');
+            if (backdrop) {
+                backdrop.style.display = 'flex';
+                backdrop.offsetHeight; // Force reflow
+                backdrop.classList.add('show');
+
+                // Prevent body scroll
+                document.body.classList.add('modal-open');
+            }
+
+            // Close modal function
+            function closeModal() {
+                const backdrop = modal.querySelector('.modal-backdrop');
+                if (backdrop) {
+                    backdrop.classList.remove('show');
+
+                    // Wait for animation to complete
+                    setTimeout(() => {
+                        modal.innerHTML = '';
+                        document.body.classList.remove('modal-open');
+                    }, 300);
+                }
+            }
+
+            // Event listeners
+            modal.addEventListener('click', function(e) {
+                // Close on backdrop click
+                if (e.target.classList.contains('modal-backdrop')) {
+                    closeModal();
+                }
+
+                // Close on close button click
+                if (e.target.closest('[data-close-modal]')) {
+                    e.preventDefault();
+                    closeModal();
+                }
+            });
+
+            // Close on Escape key
+            function handleEscape(e) {
+                if (e.key === 'Escape') {
+                    closeModal();
+                    document.removeEventListener('keydown', handleEscape);
+                }
+            }
+            document.addEventListener('keydown', handleEscape);
+        }
+
+        // Initialize immediately if DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initModal);
+        } else {
+            initModal();
+        }
+    })();
+</script>
+
+<style>
+    /* Modal backdrop */
+    .modal-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1050;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(4px);
+    }
+
+    .modal-backdrop.show {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    /* Modal dialog */
+    .modal-dialog {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        max-width: 600px;
+        width: 90%;
+        max-height: 80vh;
+        overflow: hidden;
+        transform: scale(0.9) translateY(-50px);
+        transition: transform 0.3s ease;
+        margin: 20px;
+    }
+
+    .modal-backdrop.show .modal-dialog {
+        transform: scale(1) translateY(0);
+    }
+
+    .modal-dialog-sm {
+        max-width: 400px;
+    }
+
+    /* Modal header */
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding: 24px 24px 0;
+        gap: 16px;
+    }
+
+    .modal-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #1f2937;
+        margin: 0;
+        line-height: 1.3;
+    }
+
+    .error-title {
+        color: #dc2626;
+    }
+
+    .modal-close {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        color: #6b7280;
+        cursor: pointer;
+        padding: 8px;
+        border-radius: 6px;
+        transition: all 0.2s ease;
+        line-height: 1;
+        flex-shrink: 0;
+    }
+
+    .modal-close:hover {
+        color: #374151;
+        background-color: #f3f4f6;
+    }
+
+    .modal-close:focus {
+        outline: 2px solid #3b82f6;
+        outline-offset: 2px;
+    }
+
+    /* Modal body */
+    .modal-body {
+        padding: 16px 24px 24px;
+        overflow-y: auto;
+        max-height: calc(80vh - 100px);
+    }
+
+    .company-name {
+        font-size: 1.125rem;
+        color: #2563eb;
+        font-weight: 600;
+        margin: 0 0 8px 0;
+    }
+
+    .duration {
+        font-size: 0.875rem;
+        color: #6b7280;
+        margin: 0 0 16px 0;
+    }
+
+    .description {
+        color: #374151;
+        line-height: 1.6;
+        white-space: pre-line;
+        margin: 0;
+    }
+
+    .error-message {
+        color: #dc2626;
+        margin: 0;
+    }
+
+    /* Prevent body scroll when modal is open */
+    body.modal-open {
+        overflow: hidden;
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 640px) {
+        .modal-dialog {
+            width: 95%;
+            margin: 10px;
+            max-height: 90vh;
+        }
+
+        .modal-header,
+        .modal-body {
+            padding-left: 16px;
+            padding-right: 16px;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+        }
+    }
+</style>

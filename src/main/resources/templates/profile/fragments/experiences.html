@@ -1,0 +1,43 @@
+<!-- Experience Fragment -->
+<div class="animate-fade-in">
+    <div th:each="experience : ${experiences}" th:object="${experience}" class="section-card">
+        <h3 th:text="*{title}" class="text-xl font-semibold text-gray-800 mb-1">Title</h3>
+        <h4 th:text="*{company}" class="text-blue-600 mb-1">Company</h4>
+        <p th:text="*{duration}" class="text-sm text-gray-500">Duration</p>
+        <p th:text="*{description}" class="text-gray-600 text-sm mb-4">Description</p>
+
+        <button class="text-blue-600 hover:underline text-sm"
+                th:hx-get="@{/profiles/{profileId}/experiences/{experienceId}(profileId=${profileId}, experienceId=*{id})}"
+                hx-target="#experience-modal"
+                hx-swap="innerHTML">
+            <i class="fas fa-info-circle mr-1"></i> View Details
+        </button>
+    </div>
+
+    <div th:if="${#lists.isEmpty(experiences)}" class="text-center py-12">
+        <i class="fas fa-briefcase text-4xl text-gray-300 mb-4"></i>
+        <p class="text-gray-500">No experience entries found.</p>
+    </div>
+</div>
+
+<div id="experience-modal"></div>
+
+<style>
+    .animate-fade-in {
+        animation: fadeIn 0.5s ease-in;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .section-card {
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        background: white;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+</style>

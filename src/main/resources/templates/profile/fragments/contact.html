@@ -1,0 +1,171 @@
+<!-- Enhanced Contact Fragment -->
+<div class="animate-fade-in">
+    <h2 class="contact-title">Get In Touch</h2>
+
+    <div class="contact-grid">
+        <!-- Contact Information -->
+        <div class="contact-info-card">
+            <h3 style="font-size: 1.5rem; font-weight: 600; color: #4a5568; margin-bottom: 2rem; text-align: center;">
+                <i class="fas fa-address-card" style="margin-right: 0.5rem; color: #667eea;"></i>
+                Contact Information
+            </h3>
+
+            <div class="contact-item">
+                <div class="contact-icon email">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <div>
+                    <p style="font-size: 0.9rem; color: #718096; margin-bottom: 0.25rem;">Email Address</p>
+                    <a th:href="'mailto:' + ${profile.email}"
+                       style="color: #2d3748; font-weight: 600; text-decoration: none; transition: color 0.3s ease;"
+                       onmouseover="this.style.color='#667eea'"
+                       onmouseout="this.style.color='#2d3748'"
+                       th:text="${profile.email}">thienphu.dev@gmail.com</a>
+                </div>
+            </div>
+
+            <div class="contact-item" th:if="${profile.phone}">
+                <div class="contact-icon phone">
+                    <i class="fas fa-phone"></i>
+                </div>
+                <div>
+                    <p style="font-size: 0.9rem; color: #718096; margin-bottom: 0.25rem;">Phone Number</p>
+                    <a th:href="'tel:' + ${profile.phone}"
+                       style="color: #2d3748; font-weight: 600; text-decoration: none; transition: color 0.3s ease;"
+                       onmouseover="this.style.color='#48bb78'"
+                       onmouseout="this.style.color='#2d3748'"
+                       th:text="${profile.phone}">+84 123 456 789</a>
+                </div>
+            </div>
+
+            <div class="contact-item" th:if="${profile.location}">
+                <div class="contact-icon location">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <div>
+                    <p style="font-size: 0.9rem; color: #718096; margin-bottom: 0.25rem;">Location</p>
+                    <p style="color: #2d3748; font-weight: 600;" th:text="${profile.location}">Ho Chi Minh City, Vietnam</p>
+                </div>
+            </div>
+
+            <!-- Social Links -->
+            <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid rgba(102, 126, 234, 0.2);">
+                <p style="font-size: 1rem; color: #4a5568; margin-bottom: 1rem; text-align: center; font-weight: 600;">Connect With Me</p>
+                <div class="social-links">
+                    <a th:href="${profile.linkedinUrl}" class="social-link linkedin" target="_blank" title="LinkedIn">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a th:href="${profile.githubUrl}" class="social-link github" target="_blank" title="GitHub">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a th:href="${profile.portfolioUrl}" class="social-link portfolio" target="_blank" title="Portfolio">
+                        <i class="fas fa-globe"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Form -->
+        <div class="contact-form-card">
+            <h3 style="font-size: 1.5rem; font-weight: 600; color: #4a5568; margin-bottom: 2rem; text-align: center;">
+                <i class="fas fa-paper-plane" style="margin-right: 0.5rem; color: #667eea;"></i>
+                Send a Message
+            </h3>
+
+            <form hx-post="/profiles/contact"
+                  hx-target="#contact-response"
+                  hx-swap="innerHTML">
+
+                <div class="form-group">
+                    <label for="name" class="form-label">
+                        <i class="fas fa-user" style="margin-right: 0.5rem; color: #667eea;"></i>
+                        Full Name
+                    </label>
+                    <input type="text"
+                           id="name"
+                           name="name"
+                           required
+                           placeholder="Enter your full name"
+                           class="form-input">
+                </div>
+
+                <div class="form-group">
+                    <label for="email" class="form-label">
+                        <i class="fas fa-envelope" style="margin-right: 0.5rem; color: #667eea;"></i>
+                        Email Address
+                    </label>
+                    <input type="email"
+                           id="email"
+                           name="email"
+                           required
+                           placeholder="your.email@example.com"
+                           class="form-input">
+                </div>
+
+                <div class="form-group">
+                    <label for="subject" class="form-label">
+                        <i class="fas fa-tag" style="margin-right: 0.5rem; color: #667eea;"></i>
+                        Subject
+                    </label>
+                    <select id="subject" name="subject" class="form-input">
+                        <option value="general">💬 General Inquiry</option>
+                        <option value="collaboration">🤝 Collaboration Opportunity</option>
+                        <option value="job">💼 Job Opportunity</option>
+                        <option value="consultation">🎯 Technical Consultation</option>
+                        <option value="project">🚀 Project Discussion</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="message" class="form-label">
+                        <i class="fas fa-comment-dots" style="margin-right: 0.5rem; color: #667eea;"></i>
+                        Message
+                    </label>
+                    <textarea id="message"
+                              name="message"
+                              required
+                              placeholder="Tell me about your project, idea, or how I can help you..."
+                              class="form-input form-textarea"></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-paper-plane"></i>
+                    Send Message
+                </button>
+            </form>
+
+            <!-- Response area -->
+            <div id="contact-response" style="margin-top: 1.5rem;"></div>
+        </div>
+    </div>
+
+    <!-- Quick Action Buttons -->
+    <div class="quick-actions">
+        <h3 class="quick-actions-title">Quick Actions</h3>
+        <div class="quick-actions-grid">
+            <button class="quick-action-btn schedule"
+                    hx-get="/profiles/schedule-meeting"
+                    hx-target="#meeting-modal"
+                    hx-swap="innerHTML">
+                <i class="fas fa-calendar-alt"></i>
+                Schedule Meeting
+            </button>
+
+            <a th:href="'mailto:' + ${profile.email} + '?subject=Quick Question'"
+               class="quick-action-btn email">
+                <i class="fas fa-envelope-open"></i>
+                Quick Email
+            </a>
+
+            <button class="quick-action-btn download"
+                    hx-get="/profiles/download-resume"
+                    hx-target="_blank">
+                <i class="fas fa-download"></i>
+                Download CV
+            </button>
+        </div>
+    </div>
+
+    <!-- Meeting Modal Container -->
+    <div id="meeting-modal"></div>
+</div>

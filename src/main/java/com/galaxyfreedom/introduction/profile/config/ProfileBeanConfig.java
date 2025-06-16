@@ -1,0 +1,29 @@
+package com.galaxyfreedom.introduction.profile.config;
+
+import com.galaxyfreedom.introduction.profile.assemblers.ExperienceDetailsModelAssembler;
+import com.galaxyfreedom.introduction.profile.assemblers.ExperienceModelAssembler;
+import com.galaxyfreedom.introduction.profile.assemblers.ProfileModelAssembler;
+import com.galaxyfreedom.introduction.profile.controller.ProfileController;
+import com.galaxyfreedom.introduction.profile.model.ExperienceDetailsModel;
+import com.galaxyfreedom.introduction.profile.model.ExperienceModel;
+import com.galaxyfreedom.introduction.profile.model.ProfileModel;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class ProfileBeanConfig {
+    @Bean(name = "profileModelAssembler")
+    public ProfileModelAssembler profileModelAssembler() {
+        return new ProfileModelAssembler(ProfileController.class, ProfileModel.class);
+    }
+
+    @Bean(name = "experienceModelAssembler")
+    public ExperienceModelAssembler experienceModelAssembler() {
+        return new ExperienceModelAssembler(ProfileController.class, ExperienceModel.class);
+    }
+
+    @Bean(name = "experienceDetailsModelAssembler")
+    public ExperienceDetailsModelAssembler experienceDetailsModelAssembler() {
+        return new ExperienceDetailsModelAssembler(ProfileController.class, ExperienceDetailsModel.class);
+    }
+}

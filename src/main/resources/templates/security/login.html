@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>Login - Introduction Portfolio</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 400px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-header h2 {
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-header p {
+            color: #666;
+            margin: 0;
+        }
+
+        .form-floating {
+            margin-bottom: 1rem;
+        }
+
+        .form-control {
+            border-radius: 12px;
+            border: 2px solid #e1e5e9;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+
+        .btn-login {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 12px;
+            padding: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .alert {
+            border-radius: 12px;
+            border: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .alert-danger {
+            background-color: #fee;
+            color: #c33;
+        }
+
+        .alert-info {
+            background-color: #e8f4f8;
+            color: #0c5460;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .back-to-site {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .back-to-site a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .back-to-site a:hover {
+            color: #764ba2;
+        }
+    </style>
+</head>
+<body>
+<div class="login-container">
+    <div class="login-header">
+        <h2><i class="fas fa-user-circle"></i> Welcome Back</h2>
+        <p>Sign in to your account</p>
+    </div>
+
+    <!-- Error message -->
+    <div th:if="${param.error}" class="alert alert-danger" role="alert">
+        <i class="fas fa-exclamation-triangle"></i>
+        Invalid username or password. Please try again.
+    </div>
+
+    <!-- Logout success message -->
+    <div th:if="${param.logout}" class="alert alert-success" role="alert">
+        <i class="fas fa-check-circle"></i>
+        You have been successfully logged out.
+    </div>
+
+    <!-- Session expired message -->
+    <div th:if="${param.expired}" class="alert alert-info" role="alert">
+        <i class="fas fa-clock"></i>
+        Your session has expired. Please log in again.
+    </div>
+
+    <form th:action="@{/login}" method="post">
+        <!-- CSRF Token - This is crucial for Spring Security -->
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+        <div class="form-floating">
+            <input type="text"
+                   class="form-control"
+                   id="username"
+                   name="username"
+                   placeholder="Username"
+                   required
+                   autofocus>
+            <label for="username"><i class="fas fa-user"></i> Username</label>
+        </div>
+
+        <div class="form-floating">
+            <input type="password"
+                   class="form-control"
+                   id="password"
+                   name="password"
+                   placeholder="Password"
+                   required>
+            <label for="password"><i class="fas fa-lock"></i> Password</label>
+        </div>
+
+        <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" id="remember-me" name="remember-me">
+            <label class="form-check-label" for="remember-me">
+                Remember me
+            </label>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-login">
+            <i class="fas fa-sign-in-alt"></i> Sign In
+        </button>
+    </form>
+
+    <div class="back-to-site">
+        <a th:href="@{/profile}"><i class="fas fa-arrow-left"></i> Back to Portfolio</a>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
