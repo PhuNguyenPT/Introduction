@@ -1,6 +1,7 @@
 package com.galaxyfreedom.introduction.security.entity;
 
 import com.galaxyfreedom.introduction.audit.Auditable;
+import com.galaxyfreedom.introduction.security.enums.Role;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

@@ -1,10 +1,10 @@
 package com.galaxyfreedom.introduction.config;
 
-import com.galaxyfreedom.introduction.profile.entity.Experience;
-import com.galaxyfreedom.introduction.profile.entity.Interest;
-import com.galaxyfreedom.introduction.profile.entity.Profile;
+import com.galaxyfreedom.introduction.profile.entity.*;
+import com.galaxyfreedom.introduction.profile.enums.ProjectType;
+import com.galaxyfreedom.introduction.profile.enums.Status;
 import com.galaxyfreedom.introduction.profile.service.ProfileService;
-import com.galaxyfreedom.introduction.security.entity.Role;
+import com.galaxyfreedom.introduction.security.enums.Role;
 import com.galaxyfreedom.introduction.security.entity.UserEntity;
 import com.galaxyfreedom.introduction.security.service.UserEntityService;
 import org.slf4j.Logger;
@@ -13,9 +13,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TimeZone;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -66,11 +68,44 @@ public class DataInitializer implements CommandLineRunner {
         profile.setPortfolioUrl("https://galaxyfreedom.com");
         profile.setPrimary(true);
 
+        Project project1 = new Project("Self introduction Web App", "Full Stack Web Application using Java, Spring Framework, HTMX, " +
+                "Docker, PostgresSQL", ProjectType.WEB_APPLICATION);
+        project1.setDetailedDescription("Self learning Full Stack Web App Development using Java, Spring Framework, HTMX, " +
+                "HATEOAS, Docker, PostgresSQL");
+        project1.setStartDate(LocalDate.of(2024, 3, 1));
+        project1.setEndDate(LocalDate.now(ZoneId.of("Asia/Ho_Chi_Minh")));
+        project1.setStatus(Status.IN_PROGRESS);
+        project1.setProfile(profile);
+
+        Project project2 = new Project("Robotics", "Controlling robot arm ur10e and gripper rg2",
+                ProjectType.ROBOTICS);
+        project2.setStartDate(LocalDate.of(2023, 10, 1));
+        project2.setEndDate(LocalDate.of(2024, 3, 1));
+        project2.setStatus(Status.COMPLETED);
+        project2.setProfile(profile);
+
+        Project project3 = new Project("Concurrency Modelling", "Modelling a simple concurrency in simple airport tower controller",
+                ProjectType.THEORETICAL_COMPUTER_SCIENCE);
+        project3.setStartDate(LocalDate.of(2023, 10, 1));
+        project3.setEndDate(LocalDate.of(2024, 3, 1));
+        project3.setStatus(Status.COMPLETED);
+        project3.setProfile(profile);
+
+        Set<Project> projects = new HashSet<>(Arrays.asList(project1, project2, project3));
+        profile.setProjects(projects);
+
         // Skills
-        Set<String> skills = new HashSet<>(Arrays.asList(
+        Profile finalProfile1 = profile;
+        Set<Skill> skills = Stream.of(
                 "JavaScript", "Java", "Spring Framework", "HTMX", "Thymeleaf",
                 "MongoDB", "PostgreSQL", "Docker", "Git", "Cloud Hosting"
-        ));
+        )
+                .map(s -> {
+                    Skill skill = new Skill(s);
+                    skill.setProfile(finalProfile1);
+                    return skill;
+                })
+                .collect(Collectors.toSet());
         profile.setSkills(skills);
 
         // --- FIX FOR INTERESTS ---

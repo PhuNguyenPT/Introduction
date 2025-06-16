@@ -1,0 +1,201 @@
+<!-- Enhanced Projects Fragment with Fixed Equal Icons -->
+<div class="animate-fade-in">
+    <h2 class="contact-title">Featured Projects</h2>
+
+    <div class="contact-grid">
+        <!-- Projects Information -->
+        <div class="contact-info-card">
+            <h3 style="font-size: 1.5rem; font-weight: 600; color: #4a5568; margin-bottom: 2rem; text-align: center;">
+                <i class="fas fa-project-diagram" style="margin-right: 0.5rem; color: #667eea;"></i>
+                My Work Showcase
+            </h3>
+
+            <!-- Dynamic Projects Loop using Thymeleaf -->
+            <div th:if="${projects != null and !projects.isEmpty()}">
+                <div th:each="project : ${projects}" class="project-item">
+                    <div class="project-icon"
+                         th:class="${'project-icon ' + (project.status != null ? (project.status.name() == 'COMPLETED' ? 'completed' : (project.status.name() == 'IN_PROGRESS' ? 'in-progress' : 'pending')) : 'pending')}">
+                        <i th:class="${project.status != null ? (project.status.name() == 'COMPLETED' ? 'fas fa-check-circle' : (project.status.name() == 'IN_PROGRESS' ? 'fas fa-cog' : 'fas fa-clock')) : 'fas fa-code'}">
+                        </i>
+                    </div>
+                    <div>
+                        <p style="font-size: 0.9rem; color: #718096; margin-bottom: 0.25rem;"
+                           th:text="${project.status != null ? project.status.name() : 'Unknown Status'}">Project Status</p>
+                        <p style="color: #2d3748; font-weight: 600; margin-bottom: 0.5rem;"
+                           th:text="${project.title}">Project Title</p>
+                        <p style="font-size: 0.8rem; color: #718096; margin-bottom: 0.25rem;"
+                           th:text="${project.description}">Project description goes here.</p>
+                        <p style="font-size: 0.75rem; color: #a0aec0;"
+                           th:if="${project.duration != null and !project.duration.isEmpty()}"
+                           th:text="'Duration: ' + ${project.duration}">Duration: 3 months</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fallback message when no projects are available -->
+            <div th:if="${projects == null or projects.isEmpty()}" class="project-item">
+                <div class="project-icon info">
+                    <i class="fas fa-info-circle"></i>
+                </div>
+                <div>
+                    <p style="color: #2d3748; font-weight: 600;">No projects available</p>
+                    <p style="font-size: 0.8rem; color: #718096;">Projects will be displayed here once they are added to the portfolio.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Project Inquiry Form -->
+        <div class="contact-form-card">
+            <h3 style="font-size: 1.5rem; font-weight: 600; color: #4a5568; margin-bottom: 2rem; text-align: center;">
+                <i class="fas fa-lightbulb" style="margin-right: 0.5rem; color: #667eea;"></i>
+                Got a Project Idea? Let's Talk!
+            </h3>
+
+            <form hx-post="/profiles/project-inquiry"
+                  hx-target="#project-response"
+                  hx-swap="innerHTML">
+
+                <div class="form-group">
+                    <label for="project_name" class="form-label">
+                        <i class="fas fa-user" style="margin-right: 0.5rem; color: #667eea;"></i>
+                        Your Name
+                    </label>
+                    <input type="text"
+                           id="project_name"
+                           name="name"
+                           required
+                           placeholder="Enter your full name"
+                           class="form-input">
+                </div>
+
+                <div class="form-group">
+                    <label for="project_email" class="form-label">
+                        <i class="fas fa-envelope" style="margin-right: 0.5rem; color: #667eea;"></i>
+                        Your Email Address
+                    </label>
+                    <input type="email"
+                           id="project_email"
+                           name="email"
+                           required
+                           placeholder="your.email@example.com"
+                           class="form-input">
+                </div>
+
+                <div class="form-group">
+                    <label for="project_type" class="form-label">
+                        <i class="fas fa-tags" style="margin-right: 0.5rem; color: #667eea;"></i>
+                        Project Type
+                    </label>
+                    <select id="project_type" name="projectType" class="form-input">
+                        <option value="web">Web Application</option>
+                        <option value="mobile">Mobile Application</option>
+                        <option value="data">Data Science/ML</option>
+                        <option value="design">UI/UX Design</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="project_details" class="form-label">
+                        <i class="fas fa-comment-alt" style="margin-right: 0.5rem; color: #667eea;"></i>
+                        Project Details
+                    </label>
+                    <textarea id="project_details"
+                              name="details"
+                              required
+                              placeholder="Briefly describe your project idea, goals, and any specific requirements..."
+                              class="form-input form-textarea"></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-paper-plane"></i>
+                    Send Inquiry
+                </button>
+            </form>
+
+            <!-- Response area -->
+            <div id="project-response" style="margin-top: 1.5rem;"></div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Fixed CSS for equal project icons */
+    .project-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 1rem;
+        font-size: 1.2rem;
+        color: white;
+        transition: all 0.3s ease;
+        /* Ensure all icons have the same base properties */
+        flex-shrink: 0; /* Prevent icon from shrinking */
+    }
+
+    .project-icon.completed {
+        background: linear-gradient(45deg, #48bb78, #38a169);
+    }
+
+    .project-icon.in-progress {
+        background: linear-gradient(45deg, #4299e1, #3182ce);
+    }
+
+    .project-icon.pending {
+        background: linear-gradient(45deg, #ed8936, #dd6b20);
+    }
+
+    .project-icon.info {
+        background: linear-gradient(45deg, #667eea, #764ba2);
+    }
+
+    /* Ensure all icons inside have the same size and positioning */
+    .project-icon i {
+        font-size: 1.2rem;
+        line-height: 1;
+    }
+
+    /* Add spinning animation for in-progress items */
+    .project-icon.in-progress i {
+        animation: spin 5s linear infinite;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    /* Ensure consistent hover effects */
+    .project-icon:hover {
+        transform: rotate(5deg) scale(1.1);
+    }
+
+    /* Make sure the project items are properly aligned */
+    .project-item {
+        display: flex;
+        align-items: flex-start; /* Changed from center to flex-start for better text alignment */
+        padding: 1rem;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.5);
+        transition: all 0.3s ease;
+        margin-bottom: 1rem;
+    }
+
+    .project-item:hover {
+        background: rgba(255, 255, 255, 0.8);
+        transform: translateX(5px);
+    }
+
+    /* Ensure text content takes up remaining space properly */
+    .project-item > div:last-child {
+        flex: 1;
+        min-width: 0; /* Allow text to wrap properly */
+    }
+</style>

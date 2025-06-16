@@ -69,4 +69,17 @@ public class Experience extends Auditable {
         }
         return startDate.getYear() + " - " + endDate.getYear();
     }
+
+    @Override
+    public String toString() {
+        return "Experience{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", company='" + company + '\'' +
+                ", description='" + description + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", current=" + current +
+                super.toString();
+    }
 }
