@@ -1,201 +1,787 @@
-<!-- Enhanced Projects Fragment with Fixed Equal Icons -->
-<div class="animate-fade-in">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="eng">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Projects Fragment</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/htmx/1.8.4/htmx.min.js"></script>
+</head>
+<body>
+
+<!-- Enhanced Projects Fragment with HATEOAS Navigation Links -->
+<div class="projects-container animate-fade-in">
     <h2 class="contact-title">Featured Projects</h2>
 
     <div class="contact-grid">
-        <!-- Projects Information -->
+        <!-- Projects Information Panel -->
         <div class="contact-info-card">
-            <h3 style="font-size: 1.5rem; font-weight: 600; color: #4a5568; margin-bottom: 2rem; text-align: center;">
-                <i class="fas fa-project-diagram" style="margin-right: 0.5rem; color: #667eea;"></i>
+            <h3 class="section-header">
+                <i class="fas fa-project-diagram section-icon"></i>
                 My Work Showcase
             </h3>
 
-            <!-- Dynamic Projects Loop using Thymeleaf -->
-            <div th:if="${projects != null and !projects.isEmpty()}">
-                <div th:each="project : ${projects}" class="project-item">
+            <!-- Project Statistics Summary -->
+            <div th:if="${projectModelPagedModel != null}" class="project-stats">
+                <div class="stat-item">
+                    <span class="stat-number" th:text="${projectModelPagedModel.getMetadata() != null ? projectModelPagedModel.getMetadata().getTotalElements() : 0}">0</span>
+                    <span class="stat-label">Total Projects</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" th:text="${projectModelPagedModel.getMetadata() != null ? projectModelPagedModel.getMetadata().getTotalPages() : 0}">0</span>
+                    <span class="stat-label">Pages</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" th:text="${projectModelPagedModel.getContent().size()}">0</span>
+                    <span class="stat-label">Showing</span>
+                </div>
+            </div>
+
+            <!-- Dynamic Projects Loop using projectModelPagedModel -->
+            <div th:if="${projectModelPagedModel != null and !projectModelPagedModel.getContent().isEmpty()}">
+                <div th:each="project, iterStat : ${projectModelPagedModel.getContent()}"
+                     class="project-item"
+                     th:classappend="${iterStat.last ? 'last-item' : ''}">
+
+                    <!-- Project Status Icon -->
                     <div class="project-icon"
-                         th:class="${'project-icon ' + (project.status != null ? (project.status.name() == 'COMPLETED' ? 'completed' : (project.status.name() == 'IN_PROGRESS' ? 'in-progress' : 'pending')) : 'pending')}">
-                        <i th:class="${project.status != null ? (project.status.name() == 'COMPLETED' ? 'fas fa-check-circle' : (project.status.name() == 'IN_PROGRESS' ? 'fas fa-cog' : 'fas fa-clock')) : 'fas fa-code'}">
+                         th:class="${'project-icon ' +
+                                   (project.status != null ?
+                                       (project.status.name() == 'COMPLETED' ? 'completed' :
+                                        (project.status.name() == 'IN_PROGRESS' ? 'in-progress' :
+                                         (project.status.name() == 'PENDING' ? 'pending' : 'unknown'))) : 'pending')}">
+                        <i th:class="${project.status != null ?
+                                     (project.status.name() == 'COMPLETED' ? 'fas fa-check-circle' :
+                                      (project.status.name() == 'IN_PROGRESS' ? 'fas fa-cog' :
+                                       (project.status.name() == 'PENDING' ? 'fas fa-clock' : 'fas fa-question-circle'))) : 'fas fa-code'}">
                         </i>
                     </div>
-                    <div>
-                        <p style="font-size: 0.9rem; color: #718096; margin-bottom: 0.25rem;"
-                           th:text="${project.status != null ? project.status.name() : 'Unknown Status'}">Project Status</p>
-                        <p style="color: #2d3748; font-weight: 600; margin-bottom: 0.5rem;"
-                           th:text="${project.title}">Project Title</p>
-                        <p style="font-size: 0.8rem; color: #718096; margin-bottom: 0.25rem;"
-                           th:text="${project.description}">Project description goes here.</p>
-                        <p style="font-size: 0.75rem; color: #a0aec0;"
-                           th:if="${project.duration != null and !project.duration.isEmpty()}"
-                           th:text="'Duration: ' + ${project.duration}">Duration: 3 months</p>
+
+                    <!-- Project Details -->
+                    <div class="project-details">
+                        <div class="project-header">
+                            <p class="project-status-text"
+                               th:text="${project.status != null ? project.status.name().replace('_', ' ') : 'Unknown Status'}">
+                                Project Status
+                            </p>
+                        </div>
+
+                        <h4 class="project-title" th:text="${project.title}">Project Title</h4>
+
+                        <p class="project-description" th:text="${project.description}">
+                            Project description goes here with more detailed information about the project scope and objectives.
+                        </p>
+
+                        <!-- Project Metadata -->
+                        <div class="project-metadata">
+                            <span class="metadata-item"
+                                  th:if="${project.duration != null and !project.duration.isEmpty()}">
+                                <i class="fas fa-clock"></i>
+                                <span th:text="${project.duration}">3 months</span>
+                            </span>
+
+                            <span class="metadata-item">
+                                <i class="fas fa-fingerprint"></i>
+                                <span th:text="${'ID: ' + project.id.toString().substring(0, 8) + '...'}">ID: 12345678...</span>
+                            </span>
+                        </div>
+
+                        <!-- Project Actions -->
+                        <div class="project-actions">
+                            <button class="action-btn view-btn"
+                                    th:onclick="'viewProject(\'' + ${project.id} + '\')'">
+                                <i class="fas fa-eye"></i>
+                                View Details
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Fallback message when no projects are available -->
-            <div th:if="${projects == null or projects.isEmpty()}" class="project-item">
-                <div class="project-icon info">
-                    <i class="fas fa-info-circle"></i>
+            <!-- Fixed Pagination Controls using HATEOAS Links -->
+            <div th:if="${projectModelPagedModel != null and projectModelPagedModel.getMetadata() != null and projectModelPagedModel.getMetadata().getTotalPages() > 1}"
+                 class="pagination-controls">
+
+                <!-- First Page Button (using self link to construct first page) -->
+                <button class="pagination-btn"
+                        th:disabled="${projectModelPagedModel.getMetadata().getNumber() == 0}"
+                        th:if="${projectModelPagedModel.getLink('self')}"
+                        th:attr="hx-get=${projectModelPagedModel.getLink('self').get().getHref().replaceAll('page=\\d+', 'page=1')}"
+                        hx-target=".contact-info-card">
+                    <i class="fas fa-angle-double-left"></i>
+                </button>
+
+                <!-- Previous Page Button using getPreviousLink() -->
+                <button class="pagination-btn"
+                        th:disabled="${!projectModelPagedModel.getPreviousLink().isPresent()}"
+                        th:if="${projectModelPagedModel.getPreviousLink().isPresent()}"
+                        th:attr="hx-get=${projectModelPagedModel.getPreviousLink().get().getHref()}"
+                        hx-target=".contact-info-card">
+                    <i class="fas fa-angle-left"></i>
+                </button>
+
+                <!-- Page Info -->
+                <span class="pagination-info">
+                    Page <span th:text="${projectModelPagedModel.getMetadata().getNumber() + 1}">1</span>
+                    of <span th:text="${projectModelPagedModel.getMetadata().getTotalPages()}">1</span>
+                </span>
+
+                <!-- Next Page Button using getNextLink() -->
+                <button class="pagination-btn"
+                        th:disabled="${!projectModelPagedModel.getNextLink().isPresent()}"
+                        th:if="${projectModelPagedModel.getNextLink().isPresent()}"
+                        th:attr="hx-get=${projectModelPagedModel.getNextLink().get().getHref()}"
+                        hx-target=".contact-info-card">
+                    <i class="fas fa-angle-right"></i>
+                </button>
+
+                <!-- Last Page Button (using self link to construct last page) -->
+                <button class="pagination-btn"
+                        th:disabled="${projectModelPagedModel.getMetadata().getNumber() >= projectModelPagedModel.getMetadata().getTotalPages() - 1}"
+                        th:if="${projectModelPagedModel.getLink('self')}"
+                        th:attr="hx-get=${projectModelPagedModel.getLink('self').get().getHref().replaceAll('page=\\d+', 'page=' + (projectModelPagedModel.getMetadata().getTotalPages() - 1))}"
+                        hx-target=".contact-info-card">
+                    <i class="fas fa-angle-double-right"></i>
+                </button>
+            </div>
+
+            <!-- Enhanced Fallback Message -->
+            <div th:if="${projectModelPagedModel == null or projectModelPagedModel.getContent().isEmpty()}"
+                 class="empty-state">
+                <div class="empty-icon">
+                    <i class="fas fa-folder-open"></i>
                 </div>
-                <div>
-                    <p style="color: #2d3748; font-weight: 600;">No projects available</p>
-                    <p style="font-size: 0.8rem; color: #718096;">Projects will be displayed here once they are added to the portfolio.</p>
-                </div>
+                <h4>No Projects Available</h4>
+                <p>Projects will be displayed here once they are added to the portfolio. Check back soon for updates!</p>
+                <button class="refresh-btn"
+                        th:if="${projectModelPagedModel != null and projectModelPagedModel.getLink('self')}"
+                        th:attr="hx-get=${projectModelPagedModel.getLink('self')}"
+                        hx-target=".contact-info-card">
+                    <i class="fas fa-refresh"></i>
+                    Refresh Projects
+                </button>
+                <!-- Fallback refresh button if no self link available -->
+                <button class="refresh-btn"
+                        th:unless="${projectModelPagedModel != null and projectModelPagedModel.getLink('self')}"
+                        th:attr="hx-get=${'/profiles/' + (param.profileId != null ? param.profileId[0] : '') + '/projects'}"
+                        hx-target=".contact-info-card">
+                    <i class="fas fa-refresh"></i>
+                    Refresh Projects
+                </button>
             </div>
         </div>
 
-        <!-- Project Inquiry Form -->
+        <!-- Enhanced Project Inquiry Form -->
         <div class="contact-form-card">
-            <h3 style="font-size: 1.5rem; font-weight: 600; color: #4a5568; margin-bottom: 2rem; text-align: center;">
-                <i class="fas fa-lightbulb" style="margin-right: 0.5rem; color: #667eea;"></i>
+            <h3 class="section-header">
+                <i class="fas fa-lightbulb section-icon"></i>
                 Got a Project Idea? Let's Talk!
             </h3>
 
-            <form hx-post="/profiles/project-inquiry"
+            <form th:attr="hx-post=${'/profiles/' + (param.profileId != null ? param.profileId[0] : '') + '/contact'}"
                   hx-target="#project-response"
-                  hx-swap="innerHTML">
+                  hx-swap="innerHTML"
+                  class="project-form">
 
-                <div class="form-group">
-                    <label for="project_name" class="form-label">
-                        <i class="fas fa-user" style="margin-right: 0.5rem; color: #667eea;"></i>
-                        Your Name
-                    </label>
-                    <input type="text"
-                           id="project_name"
-                           name="name"
-                           required
-                           placeholder="Enter your full name"
-                           class="form-input">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="project_name" class="form-label">
+                            <i class="fas fa-user"></i>
+                            Your Name
+                        </label>
+                        <input type="text"
+                               id="project_name"
+                               name="name"
+                               required
+                               placeholder="Enter your full name"
+                               class="form-input">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="project_email" class="form-label">
+                            <i class="fas fa-envelope"></i>
+                            Email Address
+                        </label>
+                        <input type="email"
+                               id="project_email"
+                               name="email"
+                               required
+                               placeholder="your.email@example.com"
+                               class="form-input">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="project_type" class="form-label">
+                            <i class="fas fa-tags"></i>
+                            Project Type
+                        </label>
+                        <select id="project_type" name="projectType" class="form-input">
+                            <option value="">Select Project Type</option>
+                            <option value="web">Web Application</option>
+                            <option value="mobile">Mobile Application</option>
+                            <option value="data">Data Science/ML</option>
+                            <option value="design">UI/UX Design</option>
+                            <option value="ecommerce">E-commerce</option>
+                            <option value="api">API Development</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="project_budget" class="form-label">
+                            <i class="fas fa-dollar-sign"></i>
+                            Budget Range
+                        </label>
+                        <select id="project_budget" name="budgetRange" class="form-input">
+                            <option value="">Select Budget Range</option>
+                            <option value="under-1k">Under $1,000</option>
+                            <option value="1k-5k">$1,000 - $5,000</option>
+                            <option value="5k-10k">$5,000 - $10,000</option>
+                            <option value="10k-25k">$10,000 - $25,000</option>
+                            <option value="25k-plus">$25,000+</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="project_email" class="form-label">
-                        <i class="fas fa-envelope" style="margin-right: 0.5rem; color: #667eea;"></i>
-                        Your Email Address
+                    <label for="project_timeline" class="form-label">
+                        <i class="fas fa-calendar"></i>
+                        Expected Timeline
                     </label>
-                    <input type="email"
-                           id="project_email"
-                           name="email"
-                           required
-                           placeholder="your.email@example.com"
-                           class="form-input">
-                </div>
-
-                <div class="form-group">
-                    <label for="project_type" class="form-label">
-                        <i class="fas fa-tags" style="margin-right: 0.5rem; color: #667eea;"></i>
-                        Project Type
-                    </label>
-                    <select id="project_type" name="projectType" class="form-input">
-                        <option value="web">Web Application</option>
-                        <option value="mobile">Mobile Application</option>
-                        <option value="data">Data Science/ML</option>
-                        <option value="design">UI/UX Design</option>
-                        <option value="other">Other</option>
+                    <select id="project_timeline" name="timeline" class="form-input">
+                        <option value="">Select Timeline</option>
+                        <option value="asap">ASAP (Rush Job)</option>
+                        <option value="1-month">Within 1 Month</option>
+                        <option value="2-3-months">2-3 Months</option>
+                        <option value="3-6-months">3-6 Months</option>
+                        <option value="6-months-plus">6+ Months</option>
+                        <option value="flexible">Flexible</option>
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label for="project_details" class="form-label">
-                        <i class="fas fa-comment-alt" style="margin-right: 0.5rem; color: #667eea;"></i>
+                        <i class="fas fa-comment-alt"></i>
                         Project Details
                     </label>
                     <textarea id="project_details"
-                              name="details"
+                              name="message"
                               required
-                              placeholder="Briefly describe your project idea, goals, and any specific requirements..."
-                              class="form-input form-textarea"></textarea>
+                              placeholder="Describe your project idea, goals, specific requirements, target audience, and any technical preferences..."
+                              class="form-input form-textarea"
+                              rows="5"></textarea>
                 </div>
 
                 <button type="submit" class="submit-btn">
                     <i class="fas fa-paper-plane"></i>
-                    Send Inquiry
+                    <span>Send Inquiry</span>
                 </button>
             </form>
 
-            <!-- Response area -->
-            <div id="project-response" style="margin-top: 1.5rem;"></div>
+            <!-- Enhanced Response Area -->
+            <div id="project-response" class="response-area"></div>
         </div>
     </div>
 </div>
 
 <style>
-    /* Fixed CSS for equal project icons */
-    .project-icon {
-        width: 50px;
-        height: 50px;
-        border-radius: 12px;
+    /* Enhanced CSS for Complete Projects Fragment */
+    .projects-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    .animate-fade-in {
+        animation: fadeInUp 0.8s ease-out;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .contact-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 3rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .contact-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        align-items: start;
+    }
+
+    .contact-info-card, .contact-form-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .section-header {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #4a5568;
+        margin-bottom: 2rem;
+        text-align: center;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-right: 1rem;
-        font-size: 1.2rem;
+        gap: 0.5rem;
+    }
+
+    .section-icon {
+        color: #667eea;
+    }
+
+    /* Project Statistics */
+    .project-stats {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 2rem;
+        padding: 1rem;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+        border-radius: 12px;
+    }
+
+    .stat-item {
+        text-align: center;
+    }
+
+    .stat-number {
+        display: block;
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #667eea;
+    }
+
+    .stat-label {
+        font-size: 0.8rem;
+        color: #718096;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    /* Enhanced Project Items */
+    .project-item {
+        display: flex;
+        align-items: flex-start;
+        padding: 1.5rem;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.7);
+        margin-bottom: 1.5rem;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(102, 126, 234, 0.1);
+    }
+
+    .project-item:hover {
+        background: rgba(255, 255, 255, 0.9);
+        transform: translateX(8px);
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.15);
+    }
+
+    .project-item.last-item {
+        margin-bottom: 0;
+    }
+
+    /* Project Icons with Enhanced Status Colors */
+    .project-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 1.5rem;
+        font-size: 1.4rem;
         color: white;
         transition: all 0.3s ease;
-        /* Ensure all icons have the same base properties */
-        flex-shrink: 0; /* Prevent icon from shrinking */
+        flex-shrink: 0;
     }
 
     .project-icon.completed {
-        background: linear-gradient(45deg, #48bb78, #38a169);
+        background: linear-gradient(135deg, #48bb78, #38a169);
     }
 
     .project-icon.in-progress {
-        background: linear-gradient(45deg, #4299e1, #3182ce);
+        background: linear-gradient(135deg, #4299e1, #3182ce);
     }
 
     .project-icon.pending {
-        background: linear-gradient(45deg, #ed8936, #dd6b20);
+        background: linear-gradient(135deg, #ed8936, #dd6b20);
     }
 
-    .project-icon.info {
-        background: linear-gradient(45deg, #667eea, #764ba2);
+    .project-icon.unknown {
+        background: linear-gradient(135deg, #667eea, #764ba2);
     }
 
-    /* Ensure all icons inside have the same size and positioning */
-    .project-icon i {
-        font-size: 1.2rem;
-        line-height: 1;
-    }
-
-    /* Add spinning animation for in-progress items */
     .project-icon.in-progress i {
-        animation: spin 5s linear infinite;
+        animation: spin 3s linear infinite;
     }
 
-    @keyframes spin {
-        0% {
-            transform: rotate(0deg);
-        }
-        100% {
-            transform: rotate(360deg);
-        }
-    }
-
-    /* Ensure consistent hover effects */
     .project-icon:hover {
         transform: rotate(5deg) scale(1.1);
     }
 
-    /* Make sure the project items are properly aligned */
-    .project-item {
+    @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+
+    /* Project Details */
+    .project-details {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .project-header {
         display: flex;
-        align-items: flex-start; /* Changed from center to flex-start for better text alignment */
-        padding: 1rem;
-        border-radius: 12px;
-        background: rgba(255, 255, 255, 0.5);
-        transition: all 0.3s ease;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.5rem;
+    }
+
+    .project-status-text {
+        font-size: 0.85rem;
+        color: #718096;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-weight: 500;
+        margin: 0;
+    }
+
+    .priority-badge {
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .priority-badge.high {
+        background: #fed7d7;
+        color: #c53030;
+    }
+
+    .priority-badge.medium {
+        background: #feebc8;
+        color: #dd6b20;
+    }
+
+    .priority-badge.low {
+        background: #c6f6d5;
+        color: #38a169;
+    }
+
+    .project-title {
+        color: #2d3748;
+        font-weight: 700;
+        font-size: 1.1rem;
+        margin: 0 0 0.75rem 0;
+    }
+
+    .project-description {
+        font-size: 0.9rem;
+        color: #4a5568;
+        line-height: 1.5;
         margin-bottom: 1rem;
     }
 
-    .project-item:hover {
-        background: rgba(255, 255, 255, 0.8);
-        transform: translateX(5px);
+    .project-metadata {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-bottom: 1rem;
     }
 
-    /* Ensure text content takes up remaining space properly */
-    .project-item > div:last-child {
-        flex: 1;
-        min-width: 0; /* Allow text to wrap properly */
+    .metadata-item {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        font-size: 0.8rem;
+        color: #718096;
+    }
+
+    .metadata-item i {
+        color: #667eea;
+        width: 12px;
+    }
+
+    /* Project Actions */
+    .project-actions {
+        display: flex;
+        gap: 0.75rem;
+    }
+
+    .action-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .view-btn {
+        background: #e6fffa;
+        color: #319795;
+        border: 1px solid #319795;
+    }
+
+    .view-btn:hover {
+        background: #319795;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(49, 151, 149, 0.3);
+    }
+
+    .project-links {
+        display: flex;
+        gap: 0.75rem;
+    }
+
+    .project-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .project-link.live {
+        background: #e6fffa;
+        color: #319795;
+        border: 1px solid #319795;
+    }
+
+    .project-link.github {
+        background: #f7fafc;
+        color: #4a5568;
+        border: 1px solid #4a5568;
+    }
+
+    .project-link:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Pagination Controls */
+    .pagination-controls {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 2rem;
+        padding-top: 2rem;
+        border-top: 1px solid rgba(102, 126, 234, 0.1);
+    }
+
+    .pagination-btn {
+        width: 40px;
+        height: 40px;
+        border: 1px solid #667eea;
+        background: white;
+        color: #667eea;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .pagination-btn:hover:not(:disabled) {
+        background: #667eea;
+        color: white;
+    }
+
+    .pagination-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .pagination-info {
+        margin: 0 1rem;
+        font-size: 0.9rem;
+        color: #4a5568;
+    }
+
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: 3rem 2rem;
+    }
+
+    .empty-icon {
+        font-size: 4rem;
+        color: #cbd5e0;
+        margin-bottom: 1rem;
+    }
+
+    .empty-state h4 {
+        color: #4a5568;
+        margin-bottom: 0.5rem;
+    }
+
+    .empty-state p {
+        color: #718096;
+        margin-bottom: 2rem;
+    }
+
+    .refresh-btn {
+        padding: 0.75rem 1.5rem;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .refresh-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+    }
+
+    /* Enhanced Form Styles */
+    .project-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-label {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 500;
+        color: #4a5568;
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    .form-label i {
+        color: #667eea;
+        width: 16px;
+    }
+
+    .form-input {
+        padding: 0.875rem 1rem;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+        background: rgba(255, 255, 255, 0.8);
+    }
+
+    .form-input:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        background: white;
+    }
+
+    .form-textarea {
+        resize: vertical;
+        min-height: 120px;
+    }
+
+    .submit-btn {
+        padding: 1rem 2rem;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+    }
+
+    .response-area {
+        padding: 1rem;
+        border-radius: 12px;
+        background: rgba(102, 126, 234, 0.05);
+        border: 1px solid rgba(102, 126, 234, 0.1);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .contact-grid {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        .form-row {
+            grid-template-columns: 1fr;
+        }
+
+        .project-stats {
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .project-metadata {
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .project-actions {
+            flex-direction: column;
+        }
     }
 </style>
+
+</body>
+</html>
