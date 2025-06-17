@@ -2,9 +2,11 @@ package com.galaxyfreedom.introduction.profile.config;
 
 import com.galaxyfreedom.introduction.profile.assemblers.*;
 import com.galaxyfreedom.introduction.profile.controller.ProfileController;
+import com.galaxyfreedom.introduction.profile.entity.Project;
 import com.galaxyfreedom.introduction.profile.model.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.web.PagedResourcesAssembler;
 
 @Configuration
 public class ProfileBeanConfig {
@@ -31,5 +33,10 @@ public class ProfileBeanConfig {
     @Bean(name = "projectModelAssembler")
     public ProjectModelAssembler projectModelAssembler() {
         return new ProjectModelAssembler(ProfileController.class, ProjectModel.class);
+    }
+
+    @Bean(name = "pagedResourcesAssemblerProject")
+    public PagedResourcesAssembler<Project> pagedResourcesAssemblerProject(PagedResourcesAssembler<Project> pagedResourcesAssembler) {
+        return pagedResourcesAssembler;
     }
 }

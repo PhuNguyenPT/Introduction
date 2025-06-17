@@ -8,6 +8,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ProfileService {
@@ -40,5 +41,10 @@ public class ProfileService {
     public Profile getByUser(UserEntity user) {
         return findByUser(user)
                 .orElseThrow(() -> new RuntimeException("Profile not found for user: " + user.getUsername()));
+    }
+
+    public Profile findById(UUID id) {
+        return profileRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Profile with id " + id + " not found"));
     }
 }
