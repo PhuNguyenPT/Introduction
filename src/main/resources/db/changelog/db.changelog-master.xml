@@ -4,9 +4,10 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
 
-    <changeSet id="create-schemas" author="galaxyfreedom">
+    <changeSet id="create-schemas" author="phunpt">
         <sql>CREATE SCHEMA IF NOT EXISTS security AUTHORIZATION pg_database_owner;</sql>
         <sql>CREATE SCHEMA IF NOT EXISTS portfolio AUTHORIZATION pg_database_owner;</sql>
     </changeSet>
-    <includeAll path="db.changelog"/>
+    <include file="db/changelog/2025/06/17-01-changelog.xml"/>
+    <include file="db/changelog/2025/06/17-02-changelog.xml"/>
 </databaseChangeLog>
