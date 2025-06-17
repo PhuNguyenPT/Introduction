@@ -24,6 +24,6 @@ public class ProjectModelAssembler extends RepresentationModelAssemblerSupport<P
 
     @Override
     public @NonNull ProjectModel toModel(@NonNull Project entity) {
-        return createModelWithId(entity.getId(), entity, entity.getProfile().getId());
+        return createModelWithId(entity.getId(), entity);
     }
 }
