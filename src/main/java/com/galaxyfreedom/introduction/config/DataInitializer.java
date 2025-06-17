@@ -91,7 +91,14 @@ public class DataInitializer implements CommandLineRunner {
         project3.setStatus(Status.COMPLETED);
         project3.setProfile(profile);
 
-        Set<Project> projects = new HashSet<>(Arrays.asList(project1, project2, project3));
+        Project project4 = new Project("Business Intelligence", "Data warehouse and Prediction using SQLServer, SQL, Snowflake, " +
+                "Python", ProjectType.DATA_SCIENCE);
+        project4.setStartDate(LocalDate.of(2023, 10, 1));
+        project4.setEndDate(LocalDate.of(2024, 3, 1));
+        project4.setStatus(Status.COMPLETED);
+        project4.setProfile(profile);
+
+        Set<Project> projects = new HashSet<>(Arrays.asList(project1, project2, project3, project4));
         profile.setProjects(projects);
 
         // Skills

@@ -31,4 +31,9 @@ public class ProjectService {
     public Page<Project> findAllByProfile_Id(UUID profileId, Pageable pageable) {
         return projectRepository.findAllByProfile_Id(profileId, pageable);
     }
+
+    public Project findWithProfile_IdById(UUID projectId) {
+        return projectRepository.findWithProfile_IdById(projectId)
+                .orElseThrow(() -> new EntityNotFoundException("Project with id " + projectId + " not found"));
+    }
 }
