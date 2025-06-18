@@ -2,7 +2,6 @@ package com.galaxyfreedom.introduction.profile.service;
 
 import com.galaxyfreedom.introduction.profile.entity.Profile;
 import com.galaxyfreedom.introduction.profile.repository.ProfileRepository;
-import com.galaxyfreedom.introduction.profile.repository.InterestRepository;
 import com.galaxyfreedom.introduction.security.entity.UserEntity;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
