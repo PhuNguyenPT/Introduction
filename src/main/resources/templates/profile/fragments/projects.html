@@ -1,566 +1,133 @@
-<!-- Projects Fragment -->
-<div id="projects-container" class="projects-container">
-    <div class="projects-header">
-        <h1 class="projects-title">
-            <span class="projects-icon">🚀</span>
-            My Projects
-        </h1>
-        <div class="projects-subtitle">Explore my development journey through these featured projects</div>
-    </div>
+<!-- Projects Section Fragment (for HTMX loading) -->
+<div class="contact-title">Projects</div>
 
-    <div class="projects-grid animate-fade-in">
-        <div th:each="projectModel : ${projectModelPagedModel.content}" class="project-card">
-            <div class="project-card-header">
-                <div class="project-icon">
-                    <i class="fas fa-code"></i>
-                </div>
-                <div class="project-status" th:text="${projectModel.status}"
-                     th:classappend="${projectModel.status == 'Completed'} ? 'status-completed' : (${projectModel.status == 'In Progress'} ? 'status-progress' : (${projectModel.status == 'On Hold'} ? 'status-hold' : 'status-default'))">
-                    Status
-                </div>
-            </div>
+<!-- Projects Grid -->
+<div class="projects-grid" th:if="${projectModelPagedModel != null and not #lists.isEmpty(projectModelPagedModel.content)}"
+     style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
 
-            <div class="project-content">
-                <h3 class="project-title" th:text="${projectModel.title}">Project Title</h3>
-                <div class="project-duration" th:text="${projectModel.duration}">Duration</div>
-                <p class="project-description" th:text="${projectModel.description}">Project description goes here...</p>
-            </div>
+    <div class="project-card" th:each="project : ${projectModelPagedModel.content}"
+         style="background: rgba(255, 255, 255, 0.95); padding: 2rem; border-radius: 15px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); transition: all 0.3s ease; cursor: pointer;"
+         onmouseover="this.style.transform='translateY(-10px)'; this.style.boxShadow='0 20px 40px rgba(0, 0, 0, 0.15)'"
+         onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 30px rgba(0, 0, 0, 0.1)'">
 
-            <div class="project-footer">
-                <button class="project-details-btn"
-                        th:hx-get="@{/profiles/{profileId}/projects/{projectId}(profileId=${profileId}, projectId=${projectModel.id})}"
-                        hx-target="#project-details-modal"
-                        hx-swap="innerHTML">
-                    <i class="fas fa-info-circle"></i>
-                    <span>View Details</span>
-                    <i class="fas fa-arrow-right"></i>
-                </button>
-            </div>
-        </div>
-    </div>
+        <div class="project-header" style="margin-bottom: 1.5rem;">
+            <h3 th:text="${project.title}"
+                style="color: #667eea; margin-bottom: 0.5rem; font-size: 1.5rem; font-weight: 600;">Project Title</h3>
 
-    <!-- Enhanced Pagination Controls -->
-    <div th:if="${projectModelPagedModel.metadata.totalElements > 0 and projectModelPagedModel.metadata.totalPages > 0}"
-         class="pagination-container">
-        <div class="pagination-info">
-        <span class="pagination-text">
-            Showing
-            <span class="pagination-highlight"
-                  th:text="${(projectModelPagedModel.metadata.number - 1) * projectModelPagedModel.metadata.size + 1}">1</span>
-            to
-            <span class="pagination-highlight"
-                  th:text="${T(java.lang.Math).min(projectModelPagedModel.metadata.number * projectModelPagedModel.metadata.size, projectModelPagedModel.metadata.totalElements)}">3</span>
-            of
-            <span class="pagination-highlight"
-                  th:text="${projectModelPagedModel.metadata.totalElements}">10</span>
-            projects
-        </span>
+            <span class="project-status"
+                  th:class="${'project-status status-' + project.status.name().toLowerCase()}"
+                  th:text="${project.status}"
+                  style="display: inline-block; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600; color: white;">
+                Status
+            </span>
         </div>
 
-        <div class="pagination-controls">
-            <!-- First Page -->
-            <button th:if="${projectModelPagedModel.hasLink('first') and projectModelPagedModel.metadata.number > 1}"
-                    class="pagination-btn pagination-btn-first"
-                    th:hx-get="${projectModelPagedModel.getLink('first').get().href}"
-                    hx-target="#projects-container"
-                    hx-swap="innerHTML">
-                <i class="fas fa-angle-double-left"></i>
-                <span>First</span>
-            </button>
-
-            <!-- Previous Page -->
-            <button th:if="${projectModelPagedModel.hasLink('prev')}"
-                    class="pagination-btn pagination-btn-prev"
-                    th:hx-get="${projectModelPagedModel.getLink('prev').get().href}"
-                    hx-target="#projects-container"
-                    hx-swap="innerHTML">
-                <i class="fas fa-chevron-left"></i>
-                <span>Previous</span>
-            </button>
-
-            <!-- Current Page Info -->
-            <div class="pagination-current">
-                <span class="current-page" th:text="${projectModelPagedModel.metadata.number}">1</span>
-                <span class="page-separator">of</span>
-                <span class="total-pages" th:text="${projectModelPagedModel.metadata.totalPages}">1</span>
-            </div>
-
-            <!-- Next Page -->
-            <button th:if="${projectModelPagedModel.hasLink('next')}"
-                    class="pagination-btn pagination-btn-next"
-                    th:hx-get="${projectModelPagedModel.getLink('next').get().href}"
-                    hx-target="#projects-container"
-                    hx-swap="innerHTML">
-                <span>Next</span>
-                <i class="fas fa-chevron-right"></i>
-            </button>
-
-            <!-- Last Page -->
-            <button th:if="${projectModelPagedModel.hasLink('last') and projectModelPagedModel.metadata.number < projectModelPagedModel.metadata.totalPages}"
-                    class="pagination-btn pagination-btn-last"
-                    th:hx-get="${projectModelPagedModel.getLink('last').get().href}"
-                    hx-target="#projects-container"
-                    hx-swap="innerHTML">
-                <span>Last</span>
-                <i class="fas fa-angle-double-right"></i>
-            </button>
-        </div>
-    </div>
-
-    <!-- Enhanced Empty State -->
-    <div th:if="${projectModelPagedModel.metadata.totalElements == 0}" class="empty-state">
-        <div class="empty-state-icon">
-            <i class="fas fa-rocket"></i>
-        </div>
-        <h3 class="empty-state-title">No Projects Yet</h3>
-        <p class="empty-state-description">
-            Projects will appear here once they're added to the portfolio.
+        <p class="project-description" th:text="${project.description}"
+           style="color: #666; line-height: 1.6; margin-bottom: 1.5rem; flex-grow: 1;">
+            Project description goes here...
         </p>
-        <div class="empty-state-decoration">
-            <div class="decoration-dot"></div>
-            <div class="decoration-dot"></div>
-            <div class="decoration-dot"></div>
+
+        <div class="project-footer" style="display: flex; justify-content: space-between; align-items: center; margin-top: auto;">
+            <small class="project-duration" style="color: #888; display: flex; align-items: center; gap: 0.5rem;">
+                <i class="fas fa-clock"></i>
+                <span th:text="${project.duration}">Duration</span>
+            </small>
+
+            <a th:href="@{${project.getLink('self').get().href}}"
+               class="button"
+               style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; padding: 0.5rem 1rem; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: all 0.3s ease;"
+               onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 5px 15px rgba(102, 126, 234, 0.3)'"
+               onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none'">
+                <i class="fas fa-eye" style="margin-right: 0.5rem;"></i>
+                View Details
+            </a>
         </div>
     </div>
 </div>
 
-<div id="project-details-modal"></div>
+<!-- Empty State -->
+<div class="empty-state" th:if="${projectModelPagedModel == null or #lists.isEmpty(projectModelPagedModel.content)}"
+     style="text-align: center; padding: 3rem; color: #888;">
+    <div style="font-size: 4rem; margin-bottom: 1rem; opacity: 0.5;">📁</div>
+    <h4 style="color: #667eea; margin-bottom: 0.5rem;">No Projects Found</h4>
+    <p>There are currently no projects to display.</p>
+</div>
+
+<!-- Pagination with HTMX -->
+<nav th:if="${projectModelPagedModel != null and projectModelPagedModel.metadata.totalPages > 1}"
+     style="margin-top: 2rem;">
+    <div class="pagination-wrapper" style="display: flex; justify-content: center; align-items: center; gap: 0.5rem;">
+
+        <!-- First Page -->
+        <button th:if="${projectModelPagedModel.hasLink('first')}"
+                th:hx-get="${projectModelPagedModel.getLink('first').get().href}"
+                hx-target="#projects-section"
+                hx-swap="innerHTML"
+                class="button pagination-btn"
+                style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; padding: 0.5rem 0.75rem; border-radius: 8px; border: none; font-size: 0.9rem; cursor: pointer;">
+            ««
+        </button>
+
+        <!-- Previous Page -->
+        <button th:if="${projectModelPagedModel.hasLink('prev')}"
+                th:hx-get="${projectModelPagedModel.getLink('prev').get().href}"
+                hx-target="#projects-section"
+                hx-swap="innerHTML"
+                class="button pagination-btn"
+                style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; padding: 0.5rem 0.75rem; border-radius: 8px; border: none; font-size: 0.9rem; cursor: pointer;">
+            «
+        </button>
+
+        <!-- Current Page Info -->
+        <span style="background: rgba(102, 126, 234, 0.1); color: #667eea; padding: 0.5rem 1rem; border-radius: 8px; font-weight: 600; font-size: 0.9rem;">
+            Page <span th:text="${projectModelPagedModel.metadata.number}">1</span>
+            of <span th:text="${projectModelPagedModel.metadata.totalPages}">1</span>
+        </span>
+
+        <!-- Next Page -->
+        <button th:if="${projectModelPagedModel.hasLink('next')}"
+                th:hx-get="${projectModelPagedModel.getLink('next').get().href}"
+                hx-target="#projects-section"
+                hx-swap="innerHTML"
+                class="button pagination-btn"
+                style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; padding: 0.5rem 0.75rem; border-radius: 8px; border: none; font-size: 0.9rem; cursor: pointer;">
+            »
+        </button>
+
+        <!-- Last Page -->
+        <button th:if="${projectModelPagedModel.hasLink('last')}"
+                th:hx-get="${projectModelPagedModel.getLink('last').get().href}"
+                hx-target="#projects-section"
+                hx-swap="innerHTML"
+                class="button pagination-btn"
+                style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; padding: 0.5rem 0.75rem; border-radius: 8px; border: none; font-size: 0.9rem; cursor: pointer;">
+            »»
+        </button>
+    </div>
+
+    <!-- Pagination Info -->
+    <div th:if="${projectModelPagedModel.metadata.totalElements > 0}"
+         style="text-align: center; margin-top: 1rem; color: #888; font-size: 0.9rem;">
+        Showing
+        <span th:text="${(projectModelPagedModel.metadata.number - 1) * projectModelPagedModel.metadata.size + 1}">1</span>
+        to
+        <span th:text="${T(java.lang.Math).min(projectModelPagedModel.metadata.number * projectModelPagedModel.metadata.size, projectModelPagedModel.metadata.totalElements)}">0</span>
+        of
+        <span th:text="${projectModelPagedModel.metadata.totalElements}">0</span>
+        projects
+    </div>
+</nav>
 
 <style>
-    .projects-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 1rem;
-    }
+    /* Project Status Colors */
+    .status-completed { background: linear-gradient(45deg, #48bb78, #38a169) !important; }
+    .status-in_progress { background: linear-gradient(45deg, #4299e1, #3182ce) !important; }
+    .status-planned { background: linear-gradient(45deg, #ed8936, #dd6b20) !important; }
+    .status-on_hold { background: linear-gradient(45deg, #a0aec0, #718096) !important; }
 
-    .projects-header {
-        text-align: center;
-        margin-bottom: 3rem;
-        padding: 2rem 0;
-    }
-
-    .projects-title {
-        font-size: 3rem;
-        font-weight: 800;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        margin-bottom: 1rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 1rem;
-    }
-
-    .projects-icon {
-        font-size: 3rem;
-        filter: drop-shadow(0 4px 8px rgba(102, 126, 234, 0.3));
-    }
-
-    .projects-subtitle {
-        font-size: 1.2rem;
-        color: #64748b;
-        font-weight: 500;
-        max-width: 600px;
-        margin: 0 auto;
-        line-height: 1.6;
-    }
-
-    .projects-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-        gap: 2rem;
-        margin-bottom: 3rem;
-    }
-
-    .project-card {
-        background: rgba(255, 255, 255, 0.95);
-        border-radius: 20px;
-        padding: 0;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        backdrop-filter: blur(10px);
-        overflow: hidden;
-        position: relative;
-    }
-
-    .project-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 4px;
-        background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
-    }
-
-    .project-card:hover {
-        transform: translateY(-15px) scale(1.02);
-        box-shadow: 0 25px 50px rgba(102, 126, 234, 0.25);
-    }
-
-    .project-card-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 1.5rem 1.5rem 1rem;
-    }
-
-    .project-icon {
-        width: 60px;
-        height: 60px;
-        border-radius: 15px;
-        background: linear-gradient(135deg, #667eea, #764ba2);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-size: 1.5rem;
-        box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
-        transition: all 0.3s ease;
-    }
-
-    .project-card:hover .project-icon {
-        transform: rotate(5deg) scale(1.1);
-    }
-
-    .project-status {
-        padding: 0.5rem 1rem;
-        border-radius: 20px;
-        font-size: 0.8rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        transition: all 0.3s ease;
-    }
-
-    .status-completed {
-        background: linear-gradient(135deg, #10b981, #059669);
-        color: white;
-        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-    }
-
-    .status-progress {
-        background: linear-gradient(135deg, #3b82f6, #2563eb);
-        color: white;
-        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-    }
-
-    .status-hold {
-        background: linear-gradient(135deg, #f59e0b, #d97706);
-        color: white;
-        box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
-    }
-
-    .status-default {
-        background: linear-gradient(135deg, #6b7280, #4b5563);
-        color: white;
-        box-shadow: 0 4px 12px rgba(107, 114, 128, 0.3);
-    }
-
-    .project-content {
-        padding: 0 1.5rem 1.5rem;
-    }
-
-    .project-title {
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: #1e293b;
-        margin-bottom: 0.5rem;
-        line-height: 1.3;
-    }
-
-    .project-duration {
-        font-size: 0.9rem;
-        color: #667eea;
-        font-weight: 600;
-        margin-bottom: 1rem;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-
-    .project-duration::before {
-        content: '📅';
-        font-size: 1rem;
-    }
-
-    .project-description {
-        color: #64748b;
-        line-height: 1.6;
-        font-size: 0.95rem;
-        margin-bottom: 1.5rem;
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
-
-    .project-footer {
-        padding: 1.5rem;
-        background: rgba(102, 126, 234, 0.05);
-        border-top: 1px solid rgba(102, 126, 234, 0.1);
-    }
-
-    .project-details-btn {
-        width: 100%;
-        padding: 0.8rem 1.5rem;
-        background: linear-gradient(135deg, #667eea, #764ba2);
-        color: white;
-        border: none;
-        border-radius: 12px;
-        font-weight: 600;
-        font-size: 0.95rem;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .project-details-btn::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-        transition: left 0.5s;
-    }
-
-    .project-details-btn:hover::before {
-        left: 100%;
-    }
-
-    .project-details-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
-    }
-
-    .project-details-btn:active {
-        transform: translateY(0);
-    }
-
-    /* Enhanced Pagination Styles */
-    .pagination-container {
-        background: rgba(255, 255, 255, 0.9);
-        border-radius: 20px;
-        padding: 2rem;
-        margin-top: 3rem;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .pagination-info {
-        text-align: center;
-        margin-bottom: 1.5rem;
-    }
-
-    .pagination-text {
-        color: #64748b;
-        font-size: 0.95rem;
-    }
-
-    .pagination-highlight {
-        color: #667eea;
-        font-weight: 600;
-    }
-
-    .pagination-controls {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 0.5rem;
-        flex-wrap: wrap;
-    }
-
-    .pagination-btn {
-        padding: 0.7rem 1.2rem;
-        background: rgba(255, 255, 255, 0.8);
-        border: 2px solid rgba(102, 126, 234, 0.2);
-        border-radius: 12px;
-        color: #667eea;
-        font-weight: 600;
-        font-size: 0.9rem;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        min-width: 80px;
-        justify-content: center;
-    }
-
+    /* Pagination button hover effects */
     .pagination-btn:hover {
-        background: linear-gradient(135deg, #667eea, #764ba2);
-        color: white;
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
-        border-color: transparent;
-    }
-
-    .pagination-current {
-        background: linear-gradient(135deg, #667eea, #764ba2);
-        color: white;
-        padding: 0.7rem 1.5rem;
-        border-radius: 12px;
-        font-weight: 600;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        margin: 0 1rem;
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-    }
-
-    .current-page {
-        font-size: 1.1rem;
-        font-weight: 700;
-    }
-
-    .page-separator {
-        opacity: 0.8;
-        font-size: 0.9rem;
-    }
-
-    .total-pages {
-        font-size: 1rem;
-    }
-
-    /* Enhanced Empty State */
-    .empty-state {
-        text-align: center;
-        padding: 4rem 2rem;
-        background: rgba(255, 255, 255, 0.9);
-        border-radius: 20px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .empty-state-icon {
-        width: 120px;
-        height: 120px;
-        margin: 0 auto 2rem;
-        background: linear-gradient(135deg, #667eea, #764ba2);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 3rem;
-        color: white;
-        box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
-        animation: float 3s ease-in-out infinite;
-    }
-
-    @keyframes float {
-        0%, 100% { transform: translateY(0px); }
-        50% { transform: translateY(-10px); }
-    }
-
-    .empty-state-title {
-        font-size: 2rem;
-        font-weight: 700;
-        color: #1e293b;
-        margin-bottom: 1rem;
-    }
-
-    .empty-state-description {
-        font-size: 1.1rem;
-        color: #64748b;
-        line-height: 1.6;
-        max-width: 400px;
-        margin: 0 auto 2rem;
-    }
-
-    .empty-state-decoration {
-        display: flex;
-        justify-content: center;
-        gap: 0.5rem;
-        margin-top: 2rem;
-    }
-
-    .decoration-dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, #667eea, #764ba2);
-        animation: pulse 2s ease-in-out infinite;
-    }
-
-    .decoration-dot:nth-child(2) {
-        animation-delay: 0.5s;
-    }
-
-    .decoration-dot:nth-child(3) {
-        animation-delay: 1s;
-    }
-
-    @keyframes pulse {
-        0%, 100% { opacity: 0.3; transform: scale(1); }
-        50% { opacity: 1; transform: scale(1.2); }
-    }
-
-    .animate-fade-in {
-        opacity: 0;
-        animation: fadeInUp 0.8s ease forwards;
-    }
-
-    @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(30px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    /* Responsive Design */
-    @media (max-width: 768px) {
-        .projects-title {
-            font-size: 2.5rem;
-        }
-
-        .projects-grid {
-            grid-template-columns: 1fr;
-            gap: 1.5rem;
-        }
-
-        .project-card {
-            margin: 0 1rem;
-        }
-
-        .pagination-controls {
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .pagination-btn {
-            min-width: 120px;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .projects-title {
-            font-size: 2rem;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .projects-icon {
-            font-size: 2rem;
-        }
-
-        .projects-subtitle {
-            font-size: 1rem;
-        }
+        transform: scale(1.05) !important;
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3) !important;
     }
 </style>

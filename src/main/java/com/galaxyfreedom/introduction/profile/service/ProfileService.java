@@ -14,11 +14,9 @@ import java.util.UUID;
 public class ProfileService {
 
     private final ProfileRepository profileRepository;
-    private final InterestRepository interestRepository;
 
-    public ProfileService(ProfileRepository profileRepository, InterestRepository interestRepository) {
+    public ProfileService(ProfileRepository profileRepository) {
         this.profileRepository = profileRepository;
-        this.interestRepository = interestRepository;
     }
 
     public Profile saveProfile(Profile profile) {
