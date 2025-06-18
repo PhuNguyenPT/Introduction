@@ -3,10 +3,14 @@ package com.galaxyfreedom.introduction.profile.assemblers;
 import com.galaxyfreedom.introduction.profile.entity.Profile;
 import com.galaxyfreedom.introduction.profile.mapper.ProfileMapper;
 import com.galaxyfreedom.introduction.profile.model.ContactModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.lang.NonNull;
 
 public class ContactModelAssembler extends RepresentationModelAssemblerSupport<Profile, ContactModel> {
+
+    private static final Logger log = LoggerFactory.getLogger(ContactModelAssembler.class);
 
     /**
      * Creates a new {@link RepresentationModelAssemblerSupport} using the given controller class and resource type.
@@ -25,6 +29,8 @@ public class ContactModelAssembler extends RepresentationModelAssemblerSupport<P
 
     @Override
     public @NonNull ContactModel toModel(@NonNull Profile entity) {
-        return createModelWithId(entity.getId(), entity);
+        ContactModel contactModel = createModelWithId(entity.getId(), entity, entity.getId());
+        log.info("ContactModel: {}", contactModel);
+        return contactModel;
     }
 }

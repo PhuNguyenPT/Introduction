@@ -17,7 +17,6 @@ import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.TimeZone;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -34,7 +33,7 @@ public class DataInitializer implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         // Check if user already exists to avoid duplicates on restart
         UserEntity userEntity;
         try {
@@ -91,7 +90,26 @@ public class DataInitializer implements CommandLineRunner {
         project3.setStatus(Status.COMPLETED);
         project3.setProfile(profile);
 
-        Set<Project> projects = new HashSet<>(Arrays.asList(project1, project2, project3));
+        Project project4 = new Project("Business Intelligence", "Data warehouse and Prediction using SQLServer, SQL, Snowflake, " +
+                "Python", ProjectType.DATA_SCIENCE);
+        project4.setStartDate(LocalDate.of(2023, 10, 1));
+        project4.setEndDate(LocalDate.of(2024, 3, 1));
+        project4.setStatus(Status.COMPLETED);
+        project4.setProfile(profile);
+
+        Project project5 = new Project("Game Schnappt Hubi", "German Board game Schnappt Hubi using JavaFX, Java", ProjectType.GAME);
+        project5.setStartDate(LocalDate.of(2023, 10, 1));
+        project5.setEndDate(LocalDate.of(2024, 3, 1));
+        project5.setStatus(Status.COMPLETED);
+        project5.setProfile(profile);
+
+        Project project6 = new Project("E-commerce Web App", "Small project using Java Spring Framework and VueJS", ProjectType.WEB_APPLICATION);
+        project6.setStartDate(LocalDate.of(2024, 3, 1));
+        project6.setEndDate(LocalDate.of(2024, 6, 30));
+        project6.setStatus(Status.COMPLETED);
+        project6.setProfile(profile);
+
+        Set<Project> projects = new HashSet<>(Arrays.asList(project1, project2, project3, project4, project5, project6));
         profile.setProjects(projects);
 
         // Skills

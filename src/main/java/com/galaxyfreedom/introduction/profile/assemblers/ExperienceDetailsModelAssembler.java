@@ -3,10 +3,14 @@ package com.galaxyfreedom.introduction.profile.assemblers;
 import com.galaxyfreedom.introduction.profile.entity.Experience;
 import com.galaxyfreedom.introduction.profile.mapper.ExperienceMapper;
 import com.galaxyfreedom.introduction.profile.model.ExperienceDetailsModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.lang.NonNull;
 
 public class ExperienceDetailsModelAssembler extends RepresentationModelAssemblerSupport<Experience, ExperienceDetailsModel> {
+    private static final Logger log = LoggerFactory.getLogger(ExperienceDetailsModelAssembler.class);
+
     /**
      * Creates a new {@link RepresentationModelAssemblerSupport} using the given controller class and resource type.
      *
@@ -24,6 +28,7 @@ public class ExperienceDetailsModelAssembler extends RepresentationModelAssemble
 
     @Override
     public @NonNull ExperienceDetailsModel toModel(@NonNull Experience entity) {
-        return createModelWithId(entity.getId(), entity);
+        log.info("Experience Details Id: {}, Profile Id: {}", entity.getId(), entity.getProfile().getId());
+        return createModelWithId(entity.getId(), entity, entity.getProfile().getId());
     }
 }

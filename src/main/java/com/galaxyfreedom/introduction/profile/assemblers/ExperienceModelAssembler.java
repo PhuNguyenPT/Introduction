@@ -30,7 +30,8 @@ public class ExperienceModelAssembler extends RepresentationModelAssemblerSuppor
 
     @Override
     public @NonNull ExperienceModel toModel(@NonNull Experience entity) {
-        log.info("Converting Experience to ExperienceModel {}", entity.getId());
-        return createModelWithId(entity.getId(), entity);
+        ExperienceModel experienceModel = createModelWithId(entity.getId(), entity, entity.getProfile().getId());
+        log.info("ExperienceModel {}", experienceModel);
+        return experienceModel;
     }
 }
