@@ -39,7 +39,7 @@ public class ProjectController {
 
     @GetMapping
     public String getProjects(@PathVariable UUID profileId,
-                              @PageableDefault(size = 3, sort = {"startDate"}, direction = Sort.Direction.DESC) Pageable pageable,
+                              @PageableDefault(size = 2, sort = {"startDate"}, direction = Sort.Direction.DESC) Pageable pageable,
                               Model model) {
         log.info("Fetch projects for Profile Id {}", profileId);
         Page<Project> projectPage = projectService.findAllByProfile_Id(profileId, pageable);
