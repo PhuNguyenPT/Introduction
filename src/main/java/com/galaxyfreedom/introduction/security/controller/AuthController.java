@@ -84,7 +84,7 @@ public class AuthController {
         }
 
         // Default redirect after successful login
-        return "redirect:/";
+        return "redirect:/dashboard";
     }
 
     /**
@@ -128,23 +128,6 @@ public class AuthController {
         }
 
         return "security/fragments/auth-status"; // Return a fragment template
-    }
-
-    /**
-     * Handle root path - redirect based on authentication status
-     */
-    @GetMapping("/")
-    public String home() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (authentication != null && authentication.isAuthenticated()
-                && !authentication.getName().equals("anonymousUser")) {
-            // User is authenticated, redirect to dashboard or main page
-            return "redirect:/dashboard";
-        } else {
-            // User is not authenticated, redirect to public profile
-            return "redirect:/profile";
-        }
     }
 
     @GetMapping("/dashboard")
