@@ -1,7 +1,9 @@
 package com.galaxyfreedom.introduction.profile.controller;
 
-import com.galaxyfreedom.introduction.profile.assemblers.ProjectModelAssembler;
+import com.galaxyfreedom.introduction.profile.assembler.ProjectDetailsModelAssembler;
+import com.galaxyfreedom.introduction.profile.assembler.ProjectModelAssembler;
 import com.galaxyfreedom.introduction.profile.entity.Project;
+import com.galaxyfreedom.introduction.profile.model.ProjectDetailsModel;
 import com.galaxyfreedom.introduction.profile.model.ProjectModel;
 import com.galaxyfreedom.introduction.profile.service.ProjectService;
 import org.slf4j.Logger;
@@ -29,12 +31,14 @@ public class ProjectController {
     private final ProjectService projectService;
     private final @Qualifier("projectModelAssembler") ProjectModelAssembler projectModelAssembler;
     private final @Qualifier("pagedResourcesAssemblerProject") PagedResourcesAssembler<Project> projectPagedResourcesAssembler;
+    private final ProjectDetailsModelAssembler projectDetailsModelAssembler;
 
     public ProjectController(ProjectService projectService, ProjectModelAssembler projectModelAssembler,
-                             PagedResourcesAssembler<Project> projectPagedResourcesAssembler) {
+                             PagedResourcesAssembler<Project> projectPagedResourcesAssembler, ProjectDetailsModelAssembler projectDetailsModelAssembler) {
         this.projectService = projectService;
         this.projectModelAssembler = projectModelAssembler;
         this.projectPagedResourcesAssembler = projectPagedResourcesAssembler;
+        this.projectDetailsModelAssembler = projectDetailsModelAssembler;
     }
 
     @GetMapping
@@ -57,9 +61,9 @@ public class ProjectController {
     public String getProjectDetails(@PathVariable UUID profileId, @PathVariable UUID projectId, Model model) {
         Project project = projectService.findWithProfile_IdById(projectId);
         Assert.isTrue(project.getProfile().getId().equals(profileId), "Profile Id does not match");
-        ProjectModel projectModel = projectModelAssembler.toModel(project);
-        log.info("Project Model: {}", projectModel);
-        model.addAttribute("projectModel", projectModel);
+        ProjectDetailsModel projectDetailsModel = projectDetailsModelAssembler.toModel(project);
+        log.info("Project Model: {}", projectDetailsModel);
+        model.addAttribute("projectDetailsModel", projectDetailsModel);
         return "profile/fragments/project-details";
     }
 }

@@ -73,11 +73,19 @@ public class DataInitializer implements CommandLineRunner {
                 "HATEOAS, Docker, PostgresSQL");
         project1.setStartDate(LocalDate.of(2024, 3, 1));
         project1.setEndDate(LocalDate.now(ZoneId.of("Asia/Ho_Chi_Minh")));
+        project1.setCurrent(true);
         project1.setStatus(Status.IN_PROGRESS);
+        Set<String> technologies1 = new HashSet<>(Arrays.asList(
+                "Java", "Spring Framework", "HTMX", "Docker", "PostgresSQL"
+        ));
+        project1.setTechnologies(technologies1);
         project1.setProfile(profile);
 
         Project project2 = new Project("Robotics", "Controlling robot arm ur10e and gripper rg2",
                 ProjectType.ROBOTICS);
+        project2.setDetailedDescription("Controlling robot arm ur10e and gripper rg2 using ROS, Python, .NET, Unity");
+        Set<String> technologies2 = new HashSet<>(Arrays.asList("ROS", "Python", ".NET", "Unity"));
+        project2.setTechnologies(technologies2);
         project2.setStartDate(LocalDate.of(2023, 10, 1));
         project2.setEndDate(LocalDate.of(2024, 3, 1));
         project2.setStatus(Status.COMPLETED);
@@ -85,6 +93,9 @@ public class DataInitializer implements CommandLineRunner {
 
         Project project3 = new Project("Concurrency Modelling", "Modelling a simple concurrency in simple airport tower controller",
                 ProjectType.THEORETICAL_COMPUTER_SCIENCE);
+        project3.setDetailedDescription("Modelling a simple concurrency in simple airport tower controller using Pronela, C, Perl");
+        Set<String> technologies3 = new HashSet<>(Arrays.asList("Pronela", "C", "Perl"));
+        project3.setTechnologies(technologies3);
         project3.setStartDate(LocalDate.of(2023, 10, 1));
         project3.setEndDate(LocalDate.of(2024, 3, 1));
         project3.setStatus(Status.COMPLETED);

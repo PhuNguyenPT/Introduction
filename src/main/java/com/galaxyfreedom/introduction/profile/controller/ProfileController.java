@@ -1,6 +1,6 @@
 package com.galaxyfreedom.introduction.profile.controller;
 
-import com.galaxyfreedom.introduction.profile.assemblers.*;
+import com.galaxyfreedom.introduction.profile.assembler.*;
 import com.galaxyfreedom.introduction.profile.entity.*;
 import com.galaxyfreedom.introduction.profile.model.*;
 import com.galaxyfreedom.introduction.profile.service.*;

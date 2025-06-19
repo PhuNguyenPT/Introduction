@@ -6,9 +6,7 @@
      style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
 
     <div class="project-card" th:each="project : ${projectModelPagedModel.content}"
-         style="background: rgba(255, 255, 255, 0.95); padding: 2rem; border-radius: 15px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); transition: all 0.3s ease; cursor: pointer;"
-         onmouseover="this.style.transform='translateY(-10px)'; this.style.boxShadow='0 20px 40px rgba(0, 0, 0, 0.15)'"
-         onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 30px rgba(0, 0, 0, 0.1)'">
+         style="background: rgba(255, 255, 255, 0.95); padding: 2rem; border-radius: 15px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); transition: all 0.3s ease; display: flex; flex-direction: column;">
 
         <div class="project-header" style="margin-bottom: 1.5rem;">
             <h3 th:text="${project.title}"
@@ -33,14 +31,18 @@
                 <span th:text="${project.duration}">Duration</span>
             </small>
 
-            <a th:href="@{${project.getLink('self').get().href}}"
-               class="button"
-               style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; padding: 0.5rem 1rem; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: all 0.3s ease;"
-               onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 5px 15px rgba(102, 126, 234, 0.3)'"
-               onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none'">
+            <!-- MODIFIED: Changed <a> to <button> and added HTMX attributes -->
+            <button th:if="${project.getLink('self').isPresent}"
+                    th:hx-get="${project.getLink('self').get().href}"
+                    hx-target="#project-modal-container"
+                    hx-swap="innerHTML"
+                    class="button"
+                    style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; padding: 0.5rem 1rem; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: all 0.3s ease; cursor:pointer;"
+                    onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 5px 15px rgba(102, 126, 234, 0.3)'"
+                    onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none'">
                 <i class="fas fa-eye" style="margin-right: 0.5rem;"></i>
                 View Details
-            </a>
+            </button>
         </div>
     </div>
 </div>
@@ -57,63 +59,17 @@
 <nav th:if="${projectModelPagedModel != null and projectModelPagedModel.metadata.totalPages > 1}"
      style="margin-top: 2rem;">
     <div class="pagination-wrapper" style="display: flex; justify-content: center; align-items: center; gap: 0.5rem;">
-
-        <!-- First Page -->
-        <button th:if="${projectModelPagedModel.hasLink('first')}"
-                th:hx-get="${projectModelPagedModel.getLink('first').get().href}"
-                hx-target="#projects-section"
-                hx-swap="innerHTML"
-                class="button pagination-btn"
-                style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; padding: 0.5rem 0.75rem; border-radius: 8px; border: none; font-size: 0.9rem; cursor: pointer;">
-            ««
-        </button>
-
-        <!-- Previous Page -->
-        <button th:if="${projectModelPagedModel.hasLink('prev')}"
-                th:hx-get="${projectModelPagedModel.getLink('prev').get().href}"
-                hx-target="#projects-section"
-                hx-swap="innerHTML"
-                class="button pagination-btn"
-                style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; padding: 0.5rem 0.75rem; border-radius: 8px; border: none; font-size: 0.9rem; cursor: pointer;">
-            «
-        </button>
-
-        <!-- Current Page Info -->
-        <span style="background: rgba(102, 126, 234, 0.1); color: #667eea; padding: 0.5rem 1rem; border-radius: 8px; font-weight: 600; font-size: 0.9rem;">
-            Page <span th:text="${projectModelPagedModel.metadata.number}">1</span>
-            of <span th:text="${projectModelPagedModel.metadata.totalPages}">1</span>
-        </span>
-
-        <!-- Next Page -->
-        <button th:if="${projectModelPagedModel.hasLink('next')}"
-                th:hx-get="${projectModelPagedModel.getLink('next').get().href}"
-                hx-target="#projects-section"
-                hx-swap="innerHTML"
-                class="button pagination-btn"
-                style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; padding: 0.5rem 0.75rem; border-radius: 8px; border: none; font-size: 0.9rem; cursor: pointer;">
-            »
-        </button>
-
-        <!-- Last Page -->
-        <button th:if="${projectModelPagedModel.hasLink('last')}"
-                th:hx-get="${projectModelPagedModel.getLink('last').get().href}"
-                hx-target="#projects-section"
-                hx-swap="innerHTML"
-                class="button pagination-btn"
-                style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; padding: 0.5rem 0.75rem; border-radius: 8px; border: none; font-size: 0.9rem; cursor: pointer;">
-            »»
-        </button>
+        <!-- Pagination buttons remain the same -->
+        <button th:if="${projectModelPagedModel.hasLink('first')}" th:hx-get="${projectModelPagedModel.getLink('first').get().href}" hx-target="#projects-section" hx-swap="innerHTML" class="button pagination-btn">««</button>
+        <button th:if="${projectModelPagedModel.hasLink('prev')}" th:hx-get="${projectModelPagedModel.getLink('prev').get().href}" hx-target="#projects-section" hx-swap="innerHTML" class="button pagination-btn">«</button>
+        <span style="background: rgba(102, 126, 234, 0.1); color: #667eea; padding: 0.5rem 1rem; border-radius: 8px; font-weight: 600; font-size: 0.9rem;">Page <span th:text="${projectModelPagedModel.metadata.number}">1</span> of <span th:text="${projectModelPagedModel.metadata.totalPages}">1</span></span>
+        <button th:if="${projectModelPagedModel.hasLink('next')}" th:hx-get="${projectModelPagedModel.getLink('next').get().href}" hx-target="#projects-section" hx-swap="innerHTML" class="button pagination-btn">»</button>
+        <button th:if="${projectModelPagedModel.hasLink('last')}" th:hx-get="${projectModelPagedModel.getLink('last').get().href}" hx-target="#projects-section" hx-swap="innerHTML" class="button pagination-btn">»»</button>
     </div>
-
-    <!-- Pagination Info -->
-    <div th:if="${projectModelPagedModel.metadata.totalElements > 0}"
-         style="text-align: center; margin-top: 1rem; color: #888; font-size: 0.9rem;">
-        Showing
-        <span th:text="${(projectModelPagedModel.metadata.number - 1) * projectModelPagedModel.metadata.size + 1}">1</span>
-        to
-        <span th:text="${T(java.lang.Math).min(projectModelPagedModel.metadata.number * projectModelPagedModel.metadata.size, projectModelPagedModel.metadata.totalElements)}">0</span>
-        of
-        <span th:text="${projectModelPagedModel.metadata.totalElements}">0</span>
-        projects
+    <div th:if="${projectModelPagedModel.metadata.totalElements > 0}" style="text-align: center; margin-top: 1rem; color: #888; font-size: 0.9rem;">
+        Showing <span th:text="${(projectModelPagedModel.metadata.number - 1) * projectModelPagedModel.metadata.size + 1}">1</span> to <span th:text="${T(java.lang.Math).min(projectModelPagedModel.metadata.number * projectModelPagedModel.metadata.size, projectModelPagedModel.metadata.totalElements)}">0</span> of <span th:text="${projectModelPagedModel.metadata.totalElements}">0</span> projects
     </div>
 </nav>
+
+<!-- ADDED: Container for the modal content -->
+<div id="project-modal-container"></div>

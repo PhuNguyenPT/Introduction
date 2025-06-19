@@ -1,7 +1,7 @@
 package com.galaxyfreedom.introduction.profile.controller;
 
-import com.galaxyfreedom.introduction.profile.assemblers.ExperienceDetailsModelAssembler;
-import com.galaxyfreedom.introduction.profile.assemblers.ExperienceModelAssembler;
+import com.galaxyfreedom.introduction.profile.assembler.ExperienceDetailsModelAssembler;
+import com.galaxyfreedom.introduction.profile.assembler.ExperienceModelAssembler;
 import com.galaxyfreedom.introduction.profile.entity.*;
 import com.galaxyfreedom.introduction.profile.model.ExperienceDetailsModel;
 import com.galaxyfreedom.introduction.profile.model.ExperienceModel;

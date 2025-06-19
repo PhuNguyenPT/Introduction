@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{layout :: ~{html}(title=${profile.name} + ' | Profile', content=~{::#main-content})}">
+      th:replace="~{layout :: html(title=${profile.name} + ' | Profile', content=~{::#main-content})}">
 
 <head>
     <title th:text="${profile.name}">Profile</title>
@@ -77,7 +77,7 @@
 
         <section class="contact-section">
             <div id="contact-section"
-                 th:hx-get="@{/profiles/{profileId}/contact(profileId=${profile.id})}"
+                 th:hx-get="@{/profiles/{profileId}/contact/me(profileId=${profile.id})}"
                  hx-trigger="load"
                  hx-swap="innerHTML"
                  hx-indicator="#contact-loading">
