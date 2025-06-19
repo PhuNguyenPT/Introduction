@@ -32,6 +32,6 @@ public class ProfileController {
         ProfileModel profileModel = profileModelAssembler.toModel(profile);
 
         model.addAttribute("profile", profileModel);
-        return "profile/index";
+        return "profile/show";
     }
 }

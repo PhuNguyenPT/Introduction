@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: ~{html}(title=${profile.name} + ' | Profile', content=~{::#main-content})}">
+
+<head>
+    <title th:text="${profile.name}">Profile</title>
+</head>
+<body>
+<div id="main-content">
+    <div class="container mx-auto p-4 md:p-8">
+        <header class="header">
+            <div class="hero-content">
+                <div class="profile-image">
+                    <img th:src="@{/images/profile.png}"
+                         alt="Profile Picture"
+                         style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; font-size: 4rem; color: white;">
+                        👤
+                    </div>
+                </div>
+                <h1>NGUYỄN PHƯỚC THIÊN PHÚ</h1>
+                <p class="subtitle">Public Portfolio & Skills Showcase</p>
+                <p class="description">This is a public profile page showcasing development skills and projects. This page demonstrates the integration of Spring Boot, Thymeleaf, and HTMX.</p>
+            </div>
+        </header>
+
+        <section class="contact-section">
+            <div id="projects-section"
+                 th:hx-get="@{/profiles/{profileId}/projects(profileId=${profile.id})}"
+                 hx-trigger="load"
+                 hx-swap="innerHTML"
+                 hx-indicator="#projects-loading">
+            </div>
+            <div id="projects-loading" class="htmx-indicator" style="text-align: center; padding: 2rem;">
+                <p>Loading projects...</p>
+            </div>
+        </section>
+
+        <main class="content-grid" style="margin-top: 3rem;">
+            <div class="card">
+                <h2><span class="card-icon">💼</span> Professional Experience</h2>
+                <div id="experience-section"
+                     th:hx-get="@{/profiles/{profileId}/experiences(profileId=${profile.id})}"
+                     hx-trigger="load"
+                     hx-swap="innerHTML"
+                     hx-indicator="#experience-loading"
+                     style="margin-top: 1rem;">
+                </div>
+                <span id="experience-loading" class="htmx-indicator">Loading experience...</span>
+            </div>
+
+            <div class="card">
+                <h2><span class="card-icon">🛠</span> Technical Skills</h2>
+                <div id="skills-section"
+                     th:hx-get="@{/profiles/{profileId}/skills(profileId=${profile.id})}"
+                     hx-trigger="load"
+                     hx-swap="innerHTML"
+                     hx-indicator="#skills-loading"
+                     style="margin-top: 1rem;">
+                </div>
+                <span id="skills-loading" class="htmx-indicator">Loading skills...</span>
+            </div>
+
+            <div class="card">
+                <h2><span class="card-icon">🎯</span> Development Focus</h2>
+                <div id="interests-section"
+                     th:hx-get="@{/profiles/{profileId}/interests(profileId=${profile.id})}"
+                     hx-trigger="load"
+                     hx-swap="innerHTML"
+                     hx-indicator="#interests-loading"
+                     style="margin-top: 1rem;">
+                </div>
+                <span id="interests-loading" class="htmx-indicator">Loading interests...</span>
+            </div>
+        </main>
+
+        <section class="contact-section">
+            <div id="contact-section"
+                 th:hx-get="@{/profiles/{profileId}/contact(profileId=${profile.id})}"
+                 hx-trigger="load"
+                 hx-swap="innerHTML"
+                 hx-indicator="#contact-loading">
+            </div>
+            <div id="contact-loading" class="htmx-indicator" style="text-align: center; padding: 2rem;">
+                <p>Loading contact information...</p>
+            </div>
+        </section>
+    </div>
+</div>
+</body>
+</html>
