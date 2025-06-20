@@ -49,7 +49,7 @@ public class ContactController {
         // contactMessage.getMessage()
 
         model.addAttribute("title", "Message Sent Successfully");
-        model.addAttribute("message", "Thank you for your message, " + contactMessage.getName() + "! I'll get back to you soon.");
+        model.addAttribute("message", "Thank you for your message, " + contactMessage.name() + "! I'll get back to you soon.");
 
         return "profile/fragments/contact-response";
     }
