@@ -1,37 +1,30 @@
-<!-- profile/fragments/experience-modal.html -->
-<!-- Modal Backdrop -->
-<div class="modal-backdrop" th:if="${experience != null}">
-    <!-- Modal Content -->
-    <div class="modal-dialog">
+<div class="modal-backdrop show" th:if="${experience != null}">
+    <div class="modal-dialog modal-dialog-sm">
         <div class="modal-header">
-            <h2 class="modal-title" th:text="${experience.title}">Title</h2>
-            <button type="button" class="modal-close" data-close-modal aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
+            <h2 class="modal-title" th:text="${experience.title}">Experience Title</h2>
+            <button type="button" class="modal-close" data-close-modal aria-label="Close">&times;</button>
         </div>
 
         <div class="modal-body">
-            <h3 class="company-name" th:text="${experience.company}">Company</h3>
+            <h3 class="company-name" th:text="${experience.company}">Company Name</h3>
             <p class="duration">
-                [[${#temporals.format(experience.startDate, 'MMM yyyy')}]] -
-                [[${experience.endDate != null ? #temporals.format(experience.endDate, 'MMM yyyy') : 'Present'}]]
+                <i class="fas fa-calendar-alt mr-2"></i>
+                <span th:text="${#temporals.format(experience.startDate, 'MMM yyyy')}"></span> -
+                <span th:text="${experience.endDate != null ? #temporals.format(experience.endDate, 'MMM yyyy') : 'Present'}"></span>
             </p>
-            <div class="description" th:text="${experience.description}">Description</div>
+            <p class="description" th:text="${experience.description}"></p>
         </div>
     </div>
 </div>
 
-<!-- Error State -->
 <div class="modal-backdrop show" th:if="${experience == null}">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-sm">
         <div class="modal-header">
             <h2 class="modal-title error-title">Error</h2>
-            <button type="button" class="modal-close" data-close-modal aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
+            <button type="button" class="modal-close" data-close-modal aria-label="Close">&times;</button>
         </div>
         <div class="modal-body">
-            <p class="error-message">Experience details could not be loaded.</p>
+            <p class="error-message">Could not load experience details.</p>
         </div>
     </div>
 </div>
