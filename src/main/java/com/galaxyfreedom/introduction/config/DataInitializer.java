@@ -127,21 +127,21 @@ public class DataInitializer implements CommandLineRunner {
         Profile finalProfile1 = profile;
         Set<Skill> skills = Stream.of(
                 "JavaScript", "Java", "Spring Framework", "HTMX", "Thymeleaf",
-                "MongoDB", "PostgreSQL", "Docker", "Git", "Cloud Hosting"
+                "MongoDB", "PostgreSQL", "SQLServer", "Security", "Docker", "Git", "Cloud Hosting"
         )
                 .map(s -> {
                     Skill skill = new Skill(s);
                     skill.setProfile(finalProfile1);
                     return skill;
                 })
-                .collect(Collectors.toSet());
+                .collect(Collectors.toCollection(HashSet::new));
         profile.setSkills(skills);
 
         // --- FIX FOR INTERESTS ---
         Profile finalProfile = profile;
         Set<Interest> interests = Stream.of(
-                        "Reading Tech Blogs", "Music Production", "MMA",
-                        "Dancing", "Gaming", "Watching Movie"
+                        "Programming", "Software Development","Reading Tech Blogs", "Music", "MMA",
+                        "Dancing", "Gaming", "Watching Movie", "Sight Seeing"
                 )
                 .map(s -> {
                     Interest interest = new Interest(s);
