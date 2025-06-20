@@ -427,10 +427,13 @@ body { font-family: 'Inter', sans-serif; line-height: 1.6; color: #2d3748; backg
 }
 
 /* Project Status Colors */
+/* Project Status Colors */
 .status-completed { background: linear-gradient(45deg, #48bb78, #38a169) !important; }
 .status-in_progress { background: linear-gradient(45deg, #4299e1, #3182ce) !important; }
-.status-planned { background: linear-gradient(45deg, #ed8936, #dd6b20) !important; }
+.status-planning { background: linear-gradient(45deg, #ed8936, #dd6b20) !important; }
 .status-on_hold { background: linear-gradient(45deg, #a0aec0, #718096) !important; }
+.status-maintenance { background: linear-gradient(45deg, #9f7aea, #805ad5) !important; }
+.status-archived { background: linear-gradient(45deg, #6b7280, #4b5563) !important; }
 
 /* Pagination button hover effects */
 .pagination-btn:hover {

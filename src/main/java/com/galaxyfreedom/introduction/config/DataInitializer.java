@@ -13,7 +13,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -67,58 +66,118 @@ public class DataInitializer implements CommandLineRunner {
         profile.setPortfolioUrl("https://galaxyfreedom.com");
         profile.setPrimary(true);
 
-        Project project1 = new Project("Self introduction Web App", "Full Stack Web Application using Java, Spring Framework, HTMX, " +
-                "Docker, PostgresSQL", ProjectType.WEB_APPLICATION);
-        project1.setDetailedDescription("Self learning Full Stack Web App Development using Java, Spring Framework, HTMX, " +
-                "HATEOAS, Docker, PostgresSQL");
-        project1.setStartDate(LocalDate.of(2024, 3, 1));
-        project1.setEndDate(LocalDate.now(ZoneId.of("Asia/Ho_Chi_Minh")));
-        project1.setCurrent(true);
-        project1.setStatus(Status.IN_PROGRESS);
         Set<String> technologies1 = new HashSet<>(Arrays.asList(
                 "Java", "Spring Framework", "HTMX", "Docker", "PostgresSQL"
         ));
-        project1.setTechnologies(technologies1);
-        project1.setProfile(profile);
+        Project project1 = Project.builder()
+                .title("Self introduction Web App")
+                .description("Full Stack Web Application using Java, Spring Framework, HTMX, Docker, PostgresSQL")
+                .detailedDescription("Self learning Full Stack Web App Development using Java, Spring Framework, HTMX, HATEOAS, Docker, PostgresSQL")
+                .projectUrl("https://github.com/PhuNguyenPT/Introduction")
+                .githubUrl("https://github.com/PhuNguyenPT/Introduction")
+                .demoUrl("https://galaxyfreedom.com")
+                .projectType(ProjectType.WEB_APPLICATION)
+                .status(Status.IN_PROGRESS)
+                .startDate(LocalDate.of(2024, 3, 1))
+                .current(true)
+                .technologies(technologies1)
+                .isFeatured(false)
+                .imageUrl("https://shourai.io/wp-content/uploads/2020/07/kindpng_1272110.png")
+                .displayOrder(0)
+                .profile(profile)
+                .build();
 
-        Project project2 = new Project("Robotics", "Controlling robot arm ur10e and gripper rg2",
-                ProjectType.ROBOTICS);
-        project2.setDetailedDescription("Controlling robot arm ur10e and gripper rg2 using ROS, Python, .NET, Unity");
+
         Set<String> technologies2 = new HashSet<>(Arrays.asList("ROS", "Python", ".NET", "Unity"));
-        project2.setTechnologies(technologies2);
-        project2.setStartDate(LocalDate.of(2023, 10, 1));
-        project2.setEndDate(LocalDate.of(2024, 3, 1));
-        project2.setStatus(Status.COMPLETED);
-        project2.setProfile(profile);
+        Project project2 = Project.builder()
+                .title("Robotics")
+                .description("Controlling robot arm ur10e and gripper rg2")
+                .detailedDescription("Controlling robot arm ur10e and gripper rg2 using ROS, Python, .NET, Unity")
+                .projectUrl("https://github.com/PhuNguyenPT/ur10e_rg2")
+                .githubUrl("https://github.com/PhuNguyenPT/ur10e_rg2")
+                .projectType(ProjectType.ROBOTICS)
+                .status(Status.ON_HOLD)
+                .startDate(LocalDate.of(2023, 10, 1))
+                .current(true)
+                .technologies(technologies2)
+                .isFeatured(false)
+                .imageUrl("https://public.blenderkit.com/thumbnails/assets/ac065292a3e44b3584fdb7389c8847f4/files/thumbnail_48c12b75-8f12-4277-9e47-e36c386c364e.png.2048x2048_q85.png")
+                .displayOrder(4)
+                .profile(profile)
+                .build();
 
-        Project project3 = new Project("Concurrency Modelling", "Modelling a simple concurrency in simple airport tower controller",
-                ProjectType.THEORETICAL_COMPUTER_SCIENCE);
-        project3.setDetailedDescription("Modelling a simple concurrency in simple airport tower controller using Pronela, C, Perl");
+
         Set<String> technologies3 = new HashSet<>(Arrays.asList("Pronela", "C", "Perl"));
-        project3.setTechnologies(technologies3);
-        project3.setStartDate(LocalDate.of(2023, 10, 1));
-        project3.setEndDate(LocalDate.of(2024, 3, 1));
-        project3.setStatus(Status.COMPLETED);
-        project3.setProfile(profile);
+        Project project3 = Project.builder()
+                .title("Concurrency Modelling")
+                .description("Modelling a simple concurrency in simple airport tower controller")
+                .detailedDescription("Modelling a simple concurrency in simple airport tower controller using Pronela, C, Perl")
+                .projectUrl("https://github.com/PhuNguyenPT/Air_Traffic_Control")
+                .githubUrl("https://github.com/PhuNguyenPT/Air_Traffic_Control")
+                .projectType(ProjectType.THEORETICAL_COMPUTER_SCIENCE)
+                .technologies(technologies3)
+                .startDate(LocalDate.of(2023, 10, 1))
+                .endDate(LocalDate.of(2024, 3, 1))
+                .status(Status.COMPLETED)
+                .imageUrl("https://files.realpython.com/media/An-Overview-of-Concurrency-in-Python_Watermarked.c54c399ccb32.jpg")
+                .displayOrder(3)
+                .profile(profile)
+                .build();
 
-        Project project4 = new Project("Business Intelligence", "Data warehouse and Prediction using SQLServer, SQL, Snowflake, " +
-                "Python", ProjectType.DATA_SCIENCE);
-        project4.setStartDate(LocalDate.of(2023, 10, 1));
-        project4.setEndDate(LocalDate.of(2024, 3, 1));
-        project4.setStatus(Status.COMPLETED);
-        project4.setProfile(profile);
+        Set<String> technologies4 = new HashSet<>(Arrays.asList("SQL", "Snowflake", "Python"));
 
-        Project project5 = new Project("Game Schnappt Hubi", "German Board game Schnappt Hubi using JavaFX, Java", ProjectType.GAME);
-        project5.setStartDate(LocalDate.of(2023, 10, 1));
-        project5.setEndDate(LocalDate.of(2024, 3, 1));
-        project5.setStatus(Status.COMPLETED);
-        project5.setProfile(profile);
+        Project project4 = Project.builder()
+                .title("Business Intelligence")
+                .description("Data warehouse and Prediction using SQLServer, SQL, Snowflake, Python")
+                .detailedDescription("Data warehouse Design and Data Prediction using SQLServer, SQL, Snowflake, Python")
+                .projectUrl("https://github.com/PhuNguyenPT/Current-Topic-in-CS")
+                .githubUrl("https://github.com/PhuNguyenPT/Current-Topic-in-CS")
+                .projectType(ProjectType.DATA_SCIENCE)
+                .technologies(technologies4)
+                .startDate(LocalDate.of(2023, 10, 1))
+                .endDate(LocalDate.of(2024, 3, 1))
+                .status(Status.COMPLETED)
+                .imageUrl("https://rockwalltechnologies.com/assets/img/bi.png")
+                .displayOrder(1)
+                .profile(profile)
+                .build();
 
-        Project project6 = new Project("E-commerce Web App", "Small project using Java Spring Framework and VueJS", ProjectType.WEB_APPLICATION);
-        project6.setStartDate(LocalDate.of(2024, 3, 1));
-        project6.setEndDate(LocalDate.of(2024, 6, 30));
-        project6.setStatus(Status.COMPLETED);
-        project6.setProfile(profile);
+        Set<String> technologies5 = new HashSet<>(Arrays.asList("Java", "JavaFX"));
+
+        Project project5 = Project.builder()
+                .title("Game Schnappt Hubi")
+                .description("German Board game Schnappt Hubi using JavaFX, Java")
+                .detailedDescription("German Board game Schnappt Hubi using JavaFX, Java, Design Character art model")
+                .projectUrl("https://github.com/PhuNguyenPT/Schnappt_Hubi")
+                .githubUrl("https://github.com/PhuNguyenPT/Schnappt_Hubi")
+                .projectType(ProjectType.GAME)
+                .technologies(technologies5)
+                .startDate(LocalDate.of(2023, 10, 1))
+                .endDate(LocalDate.of(2024, 3, 1))
+                .status(Status.COMPLETED)
+                .imageUrl("https://assets.mmsrg.com/isr/166325/c1/-/ASSET_MP_107209306/fee_786_587_png")
+                .displayOrder(2)
+                .profile(profile)
+                .build();
+
+        Set<String> technologies6 = new HashSet<>(Arrays.asList("Java", "Spring Framework", "PostgreSQL", "VueJS", "Docker"));
+
+        Project project6 = Project.builder()
+                .title("E-commerce Web App")
+                .description("Small Web App project using Java, Spring Framework, Docker, PostgreSQL, VueJS")
+                .detailedDescription("Small RESTful Web App App project using Java Spring Framework, Docker, PostgreSQL, VueJS")
+                .projectUrl("https://github.com/PhuNguyenPT/Shopping_Cart_API")
+                .githubUrl("https://github.com/PhuNguyenPT/Shopping_Cart_API")
+                .projectType(ProjectType.WEB_APPLICATION)
+                .technologies(technologies6)
+                .startDate(LocalDate.of(2024, 3, 1))
+                .endDate(LocalDate.of(2024, 6, 30))
+                .status(Status.ON_HOLD)
+                .imageUrl("https://shourai.io/wp-content/uploads/2020/07/kindpng_1272110.png")
+                .displayOrder(5)
+                .profile(profile)
+                .build();
+
 
         Set<Project> projects = new HashSet<>(Arrays.asList(project1, project2, project3, project4, project5, project6));
         profile.setProjects(projects);
