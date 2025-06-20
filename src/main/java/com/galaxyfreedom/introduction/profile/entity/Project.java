@@ -62,10 +62,142 @@ public class Project extends Auditable {
     // Constructors
     public Project() {}
 
-    public Project(String title, String description, ProjectType projectType) {
+    public Project(String title, String description, String detailedDescription, String projectUrl, String githubUrl, String demoUrl, ProjectType projectType, Status status, LocalDate startDate, LocalDate endDate, boolean current, Set<String> technologies, Set<String> keyFeatures, String imageUrl, Boolean isFeatured, Integer displayOrder, Profile profile) {
         this.title = title;
         this.description = description;
+        this.detailedDescription = detailedDescription;
+        this.projectUrl = projectUrl;
+        this.githubUrl = githubUrl;
+        this.demoUrl = demoUrl;
         this.projectType = projectType;
+        this.status = status;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.current = current;
+        this.technologies = technologies;
+        this.keyFeatures = keyFeatures;
+        this.imageUrl = imageUrl;
+        this.isFeatured = isFeatured;
+        this.displayOrder = displayOrder;
+        this.profile = profile;
+    }
+
+    public static class Builder {
+        private String title;
+        private String description;
+        private String detailedDescription;
+        private String projectUrl;
+        private String githubUrl;
+        private String demoUrl;
+        private ProjectType projectType;
+        private Status status;
+        private LocalDate startDate;
+        private LocalDate endDate;
+        private boolean current;
+        private Set<String> technologies;
+        private Set<String> keyFeatures;
+        private String imageUrl;
+        private Boolean isFeatured = false;
+        private Integer displayOrder = 0;
+        private Profile profile;
+
+        public Builder title(String title) {
+            this.title = title;
+            return this;
+        }
+
+        public Builder description(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public Builder detailedDescription(String detailedDescription) {
+            this.detailedDescription = detailedDescription;
+            return this;
+        }
+
+        public Builder projectUrl(String projectUrl) {
+            this.projectUrl = projectUrl;
+            return this;
+        }
+
+        public Builder githubUrl(String githubUrl) {
+            this.githubUrl = githubUrl;
+            return this;
+        }
+
+        public Builder demoUrl(String demoUrl) {
+            this.demoUrl = demoUrl;
+            return this;
+        }
+
+        public Builder projectType(ProjectType projectType) {
+            this.projectType = projectType;
+            return this;
+        }
+
+        public Builder status(Status status) {
+            this.status = status;
+            return this;
+        }
+
+        public Builder startDate(LocalDate startDate) {
+            this.startDate = startDate;
+            return this;
+        }
+
+        public Builder endDate(LocalDate endDate) {
+            this.endDate = endDate;
+            return this;
+        }
+
+        public Builder current(boolean current) {
+            this.current = current;
+            return this;
+        }
+
+        public Builder technologies(Set<String> technologies) {
+            this.technologies = technologies;
+            return this;
+        }
+
+        public Builder keyFeatures(Set<String> keyFeatures) {
+            this.keyFeatures = keyFeatures;
+            return this;
+        }
+
+        public Builder imageUrl(String imageUrl) {
+            this.imageUrl = imageUrl;
+            return this;
+        }
+
+        public Builder isFeatured(Boolean isFeatured) {
+            this.isFeatured = isFeatured;
+            return this;
+        }
+
+        public Builder displayOrder(Integer displayOrder) {
+            this.displayOrder = displayOrder;
+            return this;
+        }
+
+        public Builder profile(Profile profile) {
+            this.profile = profile;
+            return this;
+        }
+
+        public Project build() {
+            return new Project(
+                    title, description, detailedDescription, projectUrl,
+                    githubUrl, demoUrl, projectType, status,
+                    startDate, endDate, current, technologies,
+                    keyFeatures, imageUrl, isFeatured, displayOrder, profile
+            );
+        }
+    }
+
+    public static Builder builder() {
+        return new Builder();
     }
 
     // Getters and Setters

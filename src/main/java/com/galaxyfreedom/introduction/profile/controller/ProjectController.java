@@ -46,7 +46,7 @@ public class ProjectController {
                               @PageableDefault(size = 2, sort = {"startDate"}, direction = Sort.Direction.DESC) Pageable pageable,
                               Model model) {
         log.info("Fetch projects for Profile Id {}", profileId);
-        Page<Project> projectPage = projectService.findAllByProfile_Id(profileId, pageable);
+        Page<Project> projectPage = projectService.findAllByProfile_IdOrderByDisplayOrderAsc(profileId, pageable);
         projectPagedResourcesAssembler.setForceFirstAndLastRels(true);
         PagedModel<ProjectModel> projectModelPagedModel = projectPagedResourcesAssembler.toModel(projectPage, projectModelAssembler);
         log.info("Project PagedModel links: {}", projectModelPagedModel.getLinks());
