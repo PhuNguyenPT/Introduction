@@ -1,175 +1,83 @@
-<!-- Enhanced Projects Fragment -->
-<div class="animate-fade-in">
-    <h2 class="contact-title">Featured Projects</h2>
+<!-- Fixed project-details.html - Removed duplicate modal backdrop -->
+<div class="modal-backdrop" th:if="${projectDetailsModel != null}">
+    <div class="modal-dialog bg-white rounded-lg shadow-2xl w-11/12 md:w-3/4 lg:w-1/2 max-w-4xl max-h-[90vh] flex flex-col">
 
-    <div class="contact-grid">
-        <!-- Projects Information -->
-        <div class="contact-info-card">
-            <h3 style="font-size: 1.5rem; font-weight: 600; color: #4a5568; margin-bottom: 2rem; text-align: center;">
-                <i class="fas fa-project-diagram" style="margin-right: 0.5rem; color: #667eea;"></i>
-                My Work Showcase
-            </h3>
-
-            <!-- Loop through projects here, example with static data -->
-            <div class="contact-item">
-                <div class="contact-icon email"> <!-- Reusing 'email' styling for a blue icon -->
-                    <i class="fas fa-globe"></i>
-                </div>
-                <div>
-                    <p style="font-size: 0.9rem; color: #718096; margin-bottom: 0.25rem;">Web Application</p>
-                    <a href="https://example.com/project1" target="_blank"
-                       style="color: #2d3748; font-weight: 600; text-decoration: none; transition: color 0.3s ease;"
-                       onmouseover="this.style.color='#667eea'"
-                       onmouseout="this.style.color='#2d3748'">E-commerce Platform</a>
-                    <p style="font-size: 0.8rem; color: #718096;">A full-stack e-commerce solution with secure payments.</p>
-                </div>
-            </div>
-
-            <div class="contact-item">
-                <div class="contact-icon phone"> <!-- Reusing 'phone' styling for a green icon -->
-                    <i class="fas fa-mobile-alt"></i>
-                </div>
-                <div>
-                    <p style="font-size: 0.9rem; color: #718096; margin-bottom: 0.25rem;">Mobile Development</p>
-                    <a href="https://example.com/project2" target="_blank"
-                       style="color: #2d3748; font-weight: 600; text-decoration: none; transition: color 0.3s ease;"
-                       onmouseover="this.style.color='#48bb78'"
-                       onmouseout="this.style.color='#2d3748'">Fitness Tracking App</a>
-                    <p style="font-size: 0.8rem; color: #718096;">Cross-platform mobile application for workout logging.</p>
-                </div>
-            </div>
-
-            <div class="contact-item">
-                <div class="contact-icon location"> <!-- Reusing 'location' styling for a pink icon -->
-                    <i class="fas fa-chart-line"></i>
-                </div>
-                <div>
-                    <p style="font-size: 0.9rem; color: #718096; margin-bottom: 0.25rem;">Data Visualization</p>
-                    <a href="https://example.com/project3" target="_blank"
-                       style="color: #2d3748; font-weight: 600; text-decoration: none; transition: color 0.3s ease;"
-                       onmouseover="this.style.color='#ed64a6'"
-                       onmouseout="this.style.color='#2d3748'">Interactive Dashboard</a>
-                    <p style="font-size: 0.8rem; color: #718096;">Visualize complex datasets with D3.js and React.</p>
-                </div>
-            </div>
-
-            <!-- More projects can be added dynamically here using Thymeleaf's th:each -->
-
-            <!-- Social Links / Project Links -->
-            <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid rgba(102, 126, 234, 0.2);">
-                <p style="font-size: 1rem; color: #4a5568; margin-bottom: 1rem; text-align: center; font-weight: 600;">Explore My Repositories</p>
-                <div class="social-links">
-                    <a th:href="${profile.githubUrl}" class="social-link github" target="_blank" title="GitHub">
-                        <i class="fab fa-github"></i>
-                    </a>
-                    <a th:href="${profile.portfolioUrl}" class="social-link portfolio" target="_blank" title="More Projects">
-                        <i class="fas fa-code-branch"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Project Inquiry Form -->
-        <div class="contact-form-card">
-            <h3 style="font-size: 1.5rem; font-weight: 600; color: #4a5568; margin-bottom: 2rem; text-align: center;">
-                <i class="fas fa-lightbulb" style="margin-right: 0.5rem; color: #667eea;"></i>
-                Got a Project Idea? Let's Talk!
-            </h3>
-
-            <form hx-post="/profiles/project-inquiry"
-                  hx-target="#project-response"
-                  hx-swap="innerHTML">
-
-                <div class="form-group">
-                    <label for="project_name" class="form-label">
-                        <i class="fas fa-user" style="margin-right: 0.5rem; color: #667eea;"></i>
-                        Your Name
-                    </label>
-                    <input type="text"
-                           id="project_name"
-                           name="name"
-                           required
-                           placeholder="Enter your full name"
-                           class="form-input">
-                </div>
-
-                <div class="form-group">
-                    <label for="project_email" class="form-label">
-                        <i class="fas fa-envelope" style="margin-right: 0.5rem; color: #667eea;"></i>
-                        Your Email Address
-                    </label>
-                    <input type="email"
-                           id="project_email"
-                           name="email"
-                           required
-                           placeholder="your.email@example.com"
-                           class="form-input">
-                </div>
-
-                <div class="form-group">
-                    <label for="project_type" class="form-label">
-                        <i class="fas fa-tags" style="margin-right: 0.5rem; color: #667eea;"></i>
-                        Project Type
-                    </label>
-                    <select id="project_type" name="projectType" class="form-input">
-                        <option value="web">Web Application</option>
-                        <option value="mobile">Mobile Application</option>
-                        <option value="data">Data Science/ML</option>
-                        <option value="design">UI/UX Design</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="project_details" class="form-label">
-                        <i class="fas fa-comment-alt" style="margin-right: 0.5rem; color: #667eea;"></i>
-                        Project Details
-                    </label>
-                    <textarea id="project_details"
-                              name="details"
-                              required
-                              placeholder="Briefly describe your project idea, goals, and any specific requirements..."
-                              class="form-input form-textarea"></textarea>
-                </div>
-
-                <button type="submit" class="submit-btn">
-                    <i class="fas fa-paper-plane"></i>
-                    Send Inquiry
-                </button>
-            </form>
-
-            <!-- Response area -->
-            <div id="project-response" style="margin-top: 1.5rem;"></div>
-        </div>
-    </div>
-
-    <!-- Quick Action Buttons for Projects -->
-    <div class="quick-actions">
-        <h3 class="quick-actions-title">Quick Project Actions</h3>
-        <div class="quick-actions-grid">
-            <button class="quick-action-btn schedule"
-                    hx-get="/profiles/schedule-project-call"
-                    hx-target="#meeting-modal"
-                    hx-swap="innerHTML">
-                <i class="fas fa-calendar-check"></i>
-                Schedule Project Call
+        <div class="modal-header flex justify-between items-center p-4 border-b">
+            <h2 class="modal-title text-2xl font-bold text-gray-800" th:text="${projectDetailsModel.title}">Project Title</h2>
+            <button type="button" class="modal-close" data-close-modal aria-label="Close">
+                <span aria-hidden="true">&times;</span>
             </button>
+        </div>
 
-            <a th:href="'mailto:' + ${profile.email} + '?subject=Project Inquiry'"
-               class="quick-action-btn email">
-                <i class="fas fa-envelope-open-text"></i>
-                Send Project Email
+        <div class="modal-body p-6 overflow-y-auto">
+            <div class="flex flex-col md:flex-row gap-6 mb-6">
+                <div class="md:w-1/3">
+                    <img th:if="${projectDetailsModel.imageUrl != null}" th:src="${projectDetailsModel.imageUrl}" alt="Project Image" class="rounded-lg shadow-md w-full h-auto object-cover">
+                    <div th:unless="${projectDetailsModel.imageUrl != null}" class="bg-gray-200 rounded-lg h-48 flex items-center justify-center">
+                        <i class="fas fa-image text-gray-400 text-5xl"></i>
+                    </div>
+                </div>
+                <div class="md:w-2/3">
+                    <div class="flex items-center mb-3">
+                         <span class="project-status font-bold py-1 px-3 rounded-full text-sm text-white"
+                               th:classappend="${'status-' + projectDetailsModel.status.name().toLowerCase()}"
+                               th:text="${projectDetailsModel.status.name().replace('_', ' ')}">
+                             IN PROGRESS
+                         </span>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">
+                        <i class="fas fa-calendar-alt mr-2 text-gray-500"></i>
+                        <span th:text="${#temporals.format(projectDetailsModel.startDate, 'MMMM yyyy')}">Jan 2023</span>
+                        -
+                        <span th:text="${projectDetailsModel.endDate != null ? #temporals.format(projectDetailsModel.endDate, 'MMMM yyyy') : 'Present'}">Dec 2023</span>
+                    </p>
+                    <p class="text-gray-700" th:text="${projectDetailsModel.detailedDescription}">
+                        Detailed project description goes here. It provides more insight into the project's goals, challenges, and outcomes.
+                    </p>
+                </div>
+            </div>
+
+            <div class="mb-6" th:if="${not #sets.isEmpty(projectDetailsModel.keyFeatures)}">
+                <h4 class="font-bold text-lg text-gray-800 mb-2 border-l-4 border-blue-500 pl-3">Key Features</h4>
+                <ul class="list-disc list-inside text-gray-700 space-y-1">
+                    <li th:each="feature : ${projectDetailsModel.keyFeatures}" th:text="${feature}">Feature one</li>
+                </ul>
+            </div>
+
+            <div class="mb-6" th:if="${not #sets.isEmpty(projectDetailsModel.technologies)}">
+                <h4 class="font-bold text-lg text-gray-800 mb-3 border-l-4 border-blue-500 pl-3">Technologies Used</h4>
+                <div class="flex flex-wrap gap-2">
+                    <span th:each="tech : ${projectDetailsModel.technologies}" th:text="${tech}"
+                          class="bg-blue-100 text-blue-800 text-sm font-semibold px-3 py-1 rounded-full">
+                        Spring Boot
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer flex justify-end items-center gap-3 p-4 bg-gray-50 border-t rounded-b-lg">
+            <a th:if="${projectDetailsModel.demoUrl}" th:href="${projectDetailsModel.demoUrl}" target="_blank" class="button quick-action-btn schedule">
+                <i class="fas fa-external-link-alt mr-2"></i> Live Demo
             </a>
-
-            <button class="quick-action-btn download"
-                    hx-get="/profiles/download-project-portfolio"
-                    hx-target="_blank">
-                <i class="fas fa-file-download"></i>
-                Download Project List
-            </button>
+            <a th:if="${projectDetailsModel.githubUrl}" th:href="${projectDetailsModel.githubUrl}" target="_blank" class="button quick-action-btn github" style="background: linear-gradient(45deg, #333, #24292e);">
+                <i class="fab fa-github mr-2"></i> View Source
+            </a>
+            <button type="button" class="button quick-action-btn download" data-close-modal>Close</button>
         </div>
     </div>
+</div>
 
-    <!-- Meeting Modal Container (for scheduling project calls) -->
-    <div id="meeting-modal"></div>
+<!-- Error State - Only show if projectDetailsModel is null -->
+<div class="modal-backdrop show" th:if="${projectDetailsModel == null}">
+    <div class="modal-dialog">
+        <div class="modal-header">
+            <h2 class="modal-title error-title">Error</h2>
+            <button type="button" class="modal-close" data-close-modal aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p class="error-message">Project details could not be loaded.</p>
+        </div>
+    </div>
 </div>

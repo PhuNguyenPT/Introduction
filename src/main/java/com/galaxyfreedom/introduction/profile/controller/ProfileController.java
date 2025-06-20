@@ -1,6 +1,6 @@
 package com.galaxyfreedom.introduction.profile.controller;
 
-import com.galaxyfreedom.introduction.profile.assemblers.*;
+import com.galaxyfreedom.introduction.profile.assembler.*;
 import com.galaxyfreedom.introduction.profile.entity.*;
 import com.galaxyfreedom.introduction.profile.model.*;
 import com.galaxyfreedom.introduction.profile.service.*;
@@ -32,6 +32,6 @@ public class ProfileController {
         ProfileModel profileModel = profileModelAssembler.toModel(profile);
 
         model.addAttribute("profile", profileModel);
-        return "profile/index";
+        return "profile/show";
     }
 }

@@ -5,14 +5,12 @@ import com.galaxyfreedom.introduction.profile.service.ProfileService;
 import com.galaxyfreedom.introduction.security.entity.UserEntity;
 import com.galaxyfreedom.introduction.security.service.UserEntityService;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -84,7 +82,7 @@ public class AuthController {
         }
 
         // Default redirect after successful login
-        return "redirect:/";
+        return "redirect:/dashboard";
     }
 
     /**
@@ -128,23 +126,6 @@ public class AuthController {
         }
 
         return "security/fragments/auth-status"; // Return a fragment template
-    }
-
-    /**
-     * Handle root path - redirect based on authentication status
-     */
-    @GetMapping("/")
-    public String home() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (authentication != null && authentication.isAuthenticated()
-                && !authentication.getName().equals("anonymousUser")) {
-            // User is authenticated, redirect to dashboard or main page
-            return "redirect:/dashboard";
-        } else {
-            // User is not authenticated, redirect to public profile
-            return "redirect:/profile";
-        }
     }
 
     @GetMapping("/dashboard")

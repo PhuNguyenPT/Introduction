@@ -1,6 +1,6 @@
 package com.galaxyfreedom.introduction.profile.config;
 
-import com.galaxyfreedom.introduction.profile.assemblers.*;
+import com.galaxyfreedom.introduction.profile.assembler.*;
 import com.galaxyfreedom.introduction.profile.controller.ContactController;
 import com.galaxyfreedom.introduction.profile.controller.ProfileController;
 import com.galaxyfreedom.introduction.profile.controller.ExperienceController;
@@ -36,6 +36,11 @@ public class ProfileBeanConfig {
     @Bean(name = "projectModelAssembler")
     public ProjectModelAssembler projectModelAssembler() {
         return new ProjectModelAssembler(ProjectController.class, ProjectModel.class);
+    }
+
+    @Bean(name = "projectDetailsModelAssembler")
+    public ProjectDetailsModelAssembler projectDetailsModelAssembler() {
+        return new ProjectDetailsModelAssembler(ProjectController.class, ProjectDetailsModel.class);
     }
 
     @Bean(name = "pagedResourcesAssemblerProject")

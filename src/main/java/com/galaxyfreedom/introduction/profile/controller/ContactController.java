@@ -1,6 +1,6 @@
 package com.galaxyfreedom.introduction.profile.controller;
 
-import com.galaxyfreedom.introduction.profile.assemblers.ContactModelAssembler;
+import com.galaxyfreedom.introduction.profile.assembler.ContactModelAssembler;
 import com.galaxyfreedom.introduction.profile.entity.Profile;
 import com.galaxyfreedom.introduction.profile.model.ContactModel;
 import com.galaxyfreedom.introduction.profile.service.ProfileService;
@@ -23,7 +23,7 @@ public class ContactController {
         this.profileService = profileService;
     }
 
-    @GetMapping
+    @GetMapping(path = "/me")
     public String getContactInfo(Model model, @PathVariable UUID profileId) {
         Profile profile = profileService.findById(profileId);
         ContactModel contactModel = contactModelAssembler.toModel(profile);
@@ -31,7 +31,7 @@ public class ContactController {
         return "profile/fragments/contact";
     }
 
-    @PostMapping
+    @PostMapping("/me")
     @ResponseBody
     public String sendMessage(@RequestParam String message, @RequestParam String email, @PathVariable String profileId) {
         // Handle contact form submission

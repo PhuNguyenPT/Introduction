@@ -1,4 +1,4 @@
-package com.galaxyfreedom.introduction.profile.assemblers;
+package com.galaxyfreedom.introduction.profile.assembler;
 
 import com.galaxyfreedom.introduction.profile.entity.Profile;
 import com.galaxyfreedom.introduction.profile.mapper.ProfileMapper;
@@ -29,7 +29,7 @@ public class ContactModelAssembler extends RepresentationModelAssemblerSupport<P
 
     @Override
     public @NonNull ContactModel toModel(@NonNull Profile entity) {
-        ContactModel contactModel = createModelWithId(entity.getId(), entity, entity.getId());
+        ContactModel contactModel = createModelWithId("me", entity, entity.getId());
         log.info("ContactModel: {}", contactModel);
         return contactModel;
     }

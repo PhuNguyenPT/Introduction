@@ -1,4 +1,4 @@
-package com.galaxyfreedom.introduction.profile.assemblers;
+package com.galaxyfreedom.introduction.profile.assembler;
 
 import com.galaxyfreedom.introduction.profile.entity.Experience;
 import com.galaxyfreedom.introduction.profile.mapper.ExperienceMapper;

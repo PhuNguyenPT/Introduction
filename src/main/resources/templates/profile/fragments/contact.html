@@ -72,7 +72,8 @@
                 Send a Message
             </h3>
 
-            <form hx-post="/profiles/contact"
+            <form th:if="${contact.getLink('self').isPresent}"
+                  th:hx-post="${contact.getLink('self').get.href}"
                   hx-target="#contact-response"
                   hx-swap="innerHTML">
 
@@ -138,34 +139,4 @@
             <div id="contact-response" style="margin-top: 1.5rem;"></div>
         </div>
     </div>
-
-    <!-- Quick Action Buttons -->
-    <div class="quick-actions">
-        <h3 class="quick-actions-title">Quick Actions</h3>
-        <div class="quick-actions-grid">
-            <button class="quick-action-btn schedule"
-                    hx-get="/profiles/schedule-meeting"
-                    hx-target="#meeting-modal"
-                    hx-swap="innerHTML">
-                <i class="fas fa-calendar-alt"></i>
-                Schedule Meeting
-            </button>
-
-            <a th:href="'mailto:' + ${contact.email} + '?subject=Quick Question'"
-               class="quick-action-btn email">
-                <i class="fas fa-envelope-open"></i>
-                Quick Email
-            </a>
-
-            <button class="quick-action-btn download"
-                    hx-get="/profiles/download-resume"
-                    hx-target="_blank">
-                <i class="fas fa-download"></i>
-                Download CV
-            </button>
-        </div>
-    </div>
-
-    <!-- Meeting Modal Container -->
-    <div id="meeting-modal"></div>
 </div>

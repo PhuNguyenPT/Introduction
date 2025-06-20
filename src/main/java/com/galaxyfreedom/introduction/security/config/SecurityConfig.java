@@ -41,7 +41,7 @@ public class SecurityConfig {
                         // Allow access to static resources
                         .requestMatchers("/css/**", "/js/**", "/images/**", "/webjars/**").permitAll()
                         // Allow access to authentication endpoints
-                        .requestMatchers("/login", "/login-failure", "/access-denied").permitAll()
+                        .requestMatchers("/","/login", "/login-failure", "/access-denied").permitAll()
                         // Allow access to public profile pages
                         .requestMatchers("/profiles/**").permitAll()
                         // Allow access to auth status check (consider securing this if needed)

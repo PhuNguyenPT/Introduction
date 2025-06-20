@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: html(title='Welcome to GalaxyFreedom', content=~{::#main-content})}">
+
+<head>
+    <title>Welcome to GalaxyFreedom</title>
+</head>
+<body>
+<div id="main-content">
+    <div class="flex items-center justify-center p-4 my-12">
+        <div class="bg-white bg-opacity-95 p-12 rounded-3xl shadow-2xl text-center max-w-2xl w-full backdrop-blur-lg">
+            <div class="w-24 h-24 mx-auto mb-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                <i class="fas fa-star text-white text-3xl"></i>
+            </div>
+            <h1 class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-600 mb-6">
+                Welcome to GalaxyFreedom
+            </h1>
+            <p class="text-xl text-gray-700 mb-8 max-w-lg mx-auto">
+                Discover innovative and passionate portfolio.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="/profiles" class="bg-gradient-to-r from-blue-500 to-purple-600 text-white font-bold px-8 py-4 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-transform">
+                    <i class="fas fa-user-circle mr-2"></i>
+                    View Profiles
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
