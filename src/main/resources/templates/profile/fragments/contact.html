@@ -72,10 +72,12 @@
                 Send a Message
             </h3>
 
-            <form th:if="${contact.getLink('self').isPresent}"
-                  th:hx-post="${contact.getLink('self').get.href}"
-                  hx-target="#contact-response"
+            <!-- Contact Form - Updated to use modal container -->
+            <form th:hx-post="@{/profiles/{profileId}/contact/me(profileId=${profileId})}"
+                  hx-target="#contact-modal-container"
                   hx-swap="innerHTML">
+
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 
                 <div class="form-group">
                     <label for="name" class="form-label">
@@ -135,8 +137,8 @@
                 </button>
             </form>
 
-            <!-- Response area -->
-            <div id="contact-response" style="margin-top: 1.5rem;"></div>
+            <!-- Modal container for contact response -->
+            <div id="contact-modal-container"></div>
         </div>
     </div>
 </div>

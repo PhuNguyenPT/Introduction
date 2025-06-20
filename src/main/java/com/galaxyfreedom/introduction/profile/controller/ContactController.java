@@ -1,6 +1,7 @@
 package com.galaxyfreedom.introduction.profile.controller;
 
 import com.galaxyfreedom.introduction.profile.assembler.ContactModelAssembler;
+import com.galaxyfreedom.introduction.profile.dto.ContactMessage;
 import com.galaxyfreedom.introduction.profile.entity.Profile;
 import com.galaxyfreedom.introduction.profile.model.ContactModel;
 import com.galaxyfreedom.introduction.profile.service.ProfileService;
@@ -28,14 +29,28 @@ public class ContactController {
         Profile profile = profileService.findById(profileId);
         ContactModel contactModel = contactModelAssembler.toModel(profile);
         model.addAttribute("contact", contactModel);
+        model.addAttribute("profileId", profileId);
         return "profile/fragments/contact";
     }
 
+    /**
+     * REPLACE your old sendMessage method with this one.
+     * This method correctly uses a DTO to capture all form fields.
+     */
     @PostMapping("/me")
-    @ResponseBody
-    public String sendMessage(@RequestParam String message, @RequestParam String email, @PathVariable String profileId) {
-        // Handle contact form submission
-        // You can implement email sending logic here
-        return "<div class='alert alert-success'>Thank you for your message! I'll get back to you soon.</div>";
+    public String sendMessage(@ModelAttribute ContactMessage contactMessage, // This captures name, email, subject, message
+                              @PathVariable UUID profileId,
+                              Model model) {
+
+        // You can now access all the data:
+        // contactMessage.getName()
+        // contactMessage.getEmail()
+        // contactMessage.getSubject()
+        // contactMessage.getMessage()
+
+        model.addAttribute("title", "Message Sent Successfully");
+        model.addAttribute("message", "Thank you for your message, " + contactMessage.name() + "! I'll get back to you soon.");
+
+        return "profile/fragments/contact-response";
     }
 }

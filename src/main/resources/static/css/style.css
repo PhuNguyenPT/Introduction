@@ -156,6 +156,7 @@ body { font-family: 'Inter', sans-serif; line-height: 1.6; color: #2d3748; backg
     box-shadow: 0 15px 30px rgba(102, 126, 234, 0.2);
 }
 
+/* Ensure the parent of modal-backdrop has position: relative */
 .contact-form-card {
     background: rgba(255, 255, 255, 0.9);
     border-radius: 15px;
@@ -163,6 +164,8 @@ body { font-family: 'Inter', sans-serif; line-height: 1.6; color: #2d3748; backg
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     border: 1px solid rgba(102, 126, 234, 0.1);
     transition: all 0.3s ease;
+    position: relative; /* Add this */
+    overflow: hidden; /* Important to clip the blur if it extends */
 }
 
 .contact-form-card:hover {
@@ -443,20 +446,21 @@ body { font-family: 'Inter', sans-serif; line-height: 1.6; color: #2d3748; backg
 
 /* Modal backdrop */
 .modal-backdrop {
-    position: fixed;
+    /* Change from fixed to absolute */
+    position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1050;
+    z-index: 10; /* Lower z-index if it's within a card, adjust as needed */
     display: flex;
     align-items: center;
     justify-content: center;
     opacity: 0;
     visibility: hidden;
     transition: all 0.3s ease;
-    backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px); /* Keep this, but note its implications */
 }
 
 .modal-backdrop.show {
