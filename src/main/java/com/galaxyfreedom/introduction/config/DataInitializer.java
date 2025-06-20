@@ -199,7 +199,7 @@ public class DataInitializer implements CommandLineRunner {
         // --- FIX FOR INTERESTS ---
         Profile finalProfile = profile;
         Set<Interest> interests = Stream.of(
-                        "Programming", "Software Development","Reading Tech Blogs", "Music", "MMA",
+                        "Programming", "Software Development", "Music", "MMA",
                         "Dancing", "Gaming", "Watching Movie", "Sight Seeing"
                 )
                 .map(s -> {
