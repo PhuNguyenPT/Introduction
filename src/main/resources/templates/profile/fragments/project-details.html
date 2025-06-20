@@ -1,5 +1,4 @@
-<!-- Fixed project-details.html - Removed duplicate modal backdrop -->
-<div class="modal-backdrop" th:if="${projectDetailsModel != null}">
+<div class="modal-backdrop show">
     <div class="modal-dialog bg-white rounded-lg shadow-2xl w-11/12 md:w-3/4 lg:w-1/2 max-w-4xl max-h-[90vh] flex flex-col">
 
         <div class="modal-header flex justify-between items-center p-4 border-b">
@@ -32,7 +31,7 @@
                         <span th:text="${projectDetailsModel.endDate != null ? #temporals.format(projectDetailsModel.endDate, 'MMMM yyyy') : 'Present'}">Dec 2023</span>
                     </p>
                     <p class="text-gray-700" th:text="${projectDetailsModel.detailedDescription}">
-                        Detailed project description goes here. It provides more insight into the project's goals, challenges, and outcomes.
+                        Detailed project description.
                     </p>
                 </div>
             </div>
@@ -40,16 +39,15 @@
             <div class="mb-6" th:if="${not #sets.isEmpty(projectDetailsModel.keyFeatures)}">
                 <h4 class="font-bold text-lg text-gray-800 mb-2 border-l-4 border-blue-500 pl-3">Key Features</h4>
                 <ul class="list-disc list-inside text-gray-700 space-y-1">
-                    <li th:each="feature : ${projectDetailsModel.keyFeatures}" th:text="${feature}">Feature one</li>
+                    <li th:each="feature : ${projectDetailsModel.keyFeatures}" th:text="${feature}"></li>
                 </ul>
             </div>
 
-            <div class="mb-6" th:if="${not #sets.isEmpty(projectDetailsModel.technologies)}">
+            <div th:if="${not #sets.isEmpty(projectDetailsModel.technologies)}">
                 <h4 class="font-bold text-lg text-gray-800 mb-3 border-l-4 border-blue-500 pl-3">Technologies Used</h4>
                 <div class="flex flex-wrap gap-2">
                     <span th:each="tech : ${projectDetailsModel.technologies}" th:text="${tech}"
                           class="bg-blue-100 text-blue-800 text-sm font-semibold px-3 py-1 rounded-full">
-                        Spring Boot
                     </span>
                 </div>
             </div>
@@ -67,17 +65,14 @@
     </div>
 </div>
 
-<!-- Error State - Only show if projectDetailsModel is null -->
 <div class="modal-backdrop show" th:if="${projectDetailsModel == null}">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-sm">
         <div class="modal-header">
             <h2 class="modal-title error-title">Error</h2>
-            <button type="button" class="modal-close" data-close-modal aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
+            <button type="button" class="modal-close" data-close-modal aria-label="Close">&times;</button>
         </div>
         <div class="modal-body">
-            <p class="error-message">Project details could not be loaded.</p>
+            <p class="error-message">Could not load project details.</p>
         </div>
     </div>
 </div>

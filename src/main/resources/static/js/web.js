@@ -21,10 +21,9 @@
 
             // Listen for the transition to end before removing the element from the DOM.
             backdrop.addEventListener('transitionend', () => {
-                // htmx.find(modalContainer) is safer than just modalContainer
-                const container = htmx.find(modalContainer);
-                if (container) {
-                    container.innerHTML = '';
+                // Fix: Check if modalContainer still exists and clear it directly
+                if (modalContainer && modalContainer.parentNode) {
+                    modalContainer.innerHTML = '';
                 }
             }, { once: true }); // Important: only run once
         };
