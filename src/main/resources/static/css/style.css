@@ -4,36 +4,63 @@ body { font-family: 'Inter', sans-serif; line-height: 1.6; color: #2d3748; backg
 .header { text-align: center; margin-bottom: 4rem; opacity: 0; animation: fadeInUp 1s ease forwards; }
 .profile-image { width: 200px; height: 200px; border-radius: 50%; background: linear-gradient(45deg, #667eea, #764ba2); margin: 0 auto 2rem; display: flex; align-items: center; justify-content: center; font-size: 4rem; color: white; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2); transition: transform 0.3s ease; }
 .profile-image:hover { transform: scale(1.05) rotate(5deg); }
-.hero-content { background: rgba(255, 255, 255, 0.95); padding: 3rem; border-radius: 20px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1); backdrop-filter: blur(10px); }
+.hero-content { background: rgba(255, 248, 248, 0.95); padding: 3rem; border-radius: 20px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1); backdrop-filter: blur(10px); }
 .hero-content h1 { font-size: 3.5rem; margin-bottom: 0.5rem; background: linear-gradient(45deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
 .hero-content .subtitle { font-size: 1.5rem; color: #667eea; margin-bottom: 1rem; font-weight: 600; }
 .hero-content .description { font-size: 1.2rem; color: #666; max-width: 800px; margin: 0 auto; }
 .content-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem; margin-bottom: 3rem; }
-.card { background: rgba(255, 255, 255, 0.95); padding: 2rem; border-radius: 15px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); transition: all 0.3s ease; opacity: 0; animation: fadeInUp 1s ease forwards; }
+.card { background: rgba(255, 248, 248, 0.95); padding: 2rem; border-radius: 15px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); transition: all 0.3s ease; opacity: 0; animation: fadeInUp 1s ease forwards; }
 .card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15); }
-.card h2 { color: #667eea; margin-bottom: 1.5rem; font-size: 1.8rem; display: flex; align-items: center; gap: 0.5rem; }
-.card-icon { font-size: 2rem; }
-.skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1rem; margin-top: 1rem; }
-.skill-item {
+.card h2 {     font-size: 2rem;
+    font-weight: 700;
+    text-align: left;
+    margin-bottom: 3rem;
     background: linear-gradient(45deg, #667eea, #764ba2);
-    color: white;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    position: relative; }
+.card-icon {
+    font-size: 2rem;
+    /* Override the text-fill-color inherited from h2 */
+    -webkit-text-fill-color: initial; /* Or 'currentColor' to use the inherited text color if applicable */
+    color: initial; /* Reset to browser's default text color for the icon, or set a specific solid color */
+    /* If you want a specific solid color for the icon, uncomment and change this: */
+    /* color: #667eea; */ /* Example: a solid blue matching one of the gradient colors */
+    margin-right: 0.5rem; /* Add some space between icon and text */
+}.skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1rem; margin-top: 1rem; }
+.skill-item {
+    /* Base styling similar to .section-card and .project-card */
+    background: white; /* White background */
+    border: 1px solid #e2e8f0; /* Subtle border */
+    border-radius: 8px; /* Slightly rounded corners */
     padding: 1rem;
-    border-radius: 10px;
+    margin-bottom: 1rem; /* Add margin-bottom for spacing if it's in a list */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Soft initial shadow */
+
+    /* Text and layout properties */
+    color: #2d3748; /* Darker text color for better contrast on white */
     font-weight: 600;
-    transition: all 0.3s ease;
-    cursor: pointer;
     display: flex;
+    flex-direction: column; /* Allows content to stack if needed */
     align-items: center;
     justify-content: center;
     text-align: center;
-    min-height: 80px;
+    min-height: 80px; /* Maintain minimum height */
+    cursor: pointer;
+
+    /* Smooth transition for hover effects */
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, background-color 0.3s ease-in-out;
 }
-.skill-item:hover { transform: scale(1.05); box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3); }
-.roles-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 1rem;
-    margin-top: 1rem;
+
+.skill-item:hover {
+    transform: translateY(-5px); /* Lift the card slightly, consistent with .section-card */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); /* Enhance shadow */
+    background-color: #f8f8f8; /* Very subtle background change on hover */
+}
+
+.skill-item span { /* For the skill name text */
+    color: #4a5568; /* A slightly softer dark color for text */
 }
 .role-item {
     background: linear-gradient(45deg, #f56565, #ed64a6);
@@ -55,7 +82,7 @@ body { font-family: 'Inter', sans-serif; line-height: 1.6; color: #2d3748; backg
 
 /* Contact Section Styles - these now apply to Projects as well */
 .contact-section {
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 248, 248, 0.95);
     border-radius: 20px;
     padding: 3rem;
     margin-top: 3rem;
@@ -116,7 +143,7 @@ body { font-family: 'Inter', sans-serif; line-height: 1.6; color: #2d3748; backg
 }
 
 .contact-info-card {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(240, 147, 251, 0.1));
+    background: #ffe4e4;
     border-radius: 15px;
     padding: 2rem;
     border: 1px solid rgba(102, 126, 234, 0.2);
@@ -563,4 +590,21 @@ body.modal-open {
     margin-bottom: 1rem;
     background: white;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    /* Add a smooth transition for the hover effects */
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+.section-card:hover {
+    /* Lift the card slightly */
+    transform: translateY(-5px);
+    /* Enhance the shadow for a "popping out" effect */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.project-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover effects */
+}
+
+.project-card:hover {
+    transform: translateY(-5px); /* Moves the item up slightly on hover */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); /* Adds a subtle shadow */
 }
